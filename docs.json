@@ -83,6 +83,12 @@
               "guides/troubleshooting-time-entries",
               "guides/troubleshooting-invoice-total"
             ]
+          },
+          {
+            "group": "Integrations",
+            "pages": [
+              "integrations/procore-setup"
+            ]
           }
         ]
       },
