@@ -1,47 +1,72 @@
 ---
 title: "Getting started with Fieldgrid"
-description: "Create your first field, invite your team, and understand the basics in under 15 minutes."
+description: "Sign in, create your first customer/project/job, invite your team, and see an end-to-end workflow."
 ---
+
+## Who this is for
+
+This page is for people who are **new to Fieldgrid** and want a fast, product‑level overview before diving into the admin or technician guides.
+
+If you already know your role:
+
+- Start with **Admin getting started** if you run operations.
+- Start with **Technician getting started** if you do work in the field.
 
 ## Prerequisites
 
 - A Fieldgrid account with access to at least one organization.
-- Permissions to create fields and tasks (typically an admin or manager role).
+- Permissions to create customers, projects, and jobs (typically an admin or manager role).
 
 ## Step 1 – Log in and select your organization
 
 1. Go to the Fieldgrid web app.
-2. Sign in with your organization email.
-3. If you have access to multiple organizations, choose the one you want to work in from the organization switcher.
+2. Sign in with your work email.
+3. If you have access to multiple organizations, choose the one you want to work in from the organization selector.
 
-## Step 2 – Create your first field
+If you’re the first person from your company, follow **Admin onboarding: create a new organization** first.
 
-1. Navigate to the **Fields** area.
-2. Click **Create field**.
-3. Enter a name, location, and any required metadata (such as crop type or area).
-4. Save the field.
+## Step 2 – Create a customer, project, and job
 
-At this point, Fieldgrid will treat this as the primary context for tasks, sensor data, and reporting.
+Fieldgrid models work as **Customer → Project → Job → Work Orders**.
+
+1. From the admin dashboard, create a **customer** (for example, a real or test client).
+2. Under that customer, create a **project** (for example, “HVAC service and maintenance”).
+3. Inside the project, create a **job** (for example, “Quarterly service – Main building”).
+4. Add one or more **work orders** if you need to break the job into visits or technician‑level tasks.
+
+This gives you a realistic test case that matches how Fieldgrid is used in production.
 
 ## Step 3 – Invite your team
 
-1. Open **Settings → Team**.
+1. Open your **Team** or **Users** area from the admin navigation.
 2. Invite collaborators by email.
 3. Assign them roles based on what they need to do:
-   - Field techs focused on completing tasks and logging data.
-   - Managers focused on planning work and reviewing reports.
-   - Admins with full configuration access.
+   - **Technicians** focused on completing work orders and logging evidence.
+   - **Admins / coordinators** focused on planning work, managing schedules, and reviewing data.
+   - **Owners / leaders** who need read‑heavy access to dashboards and reports.
 
-## Step 4 – Run a simple workflow
+Teammates will follow the **Technician onboarding** or role‑specific getting‑started guides once they accept their invites.
 
-To see Fieldgrid in action end-to-end, follow the **Onboard a new farm** guide in the User guides section. It walks through:
+## Step 4 – Run a simple end‑to‑end workflow
 
-- Setting up fields and basic configuration.
-- Scheduling and completing a first task.
-- Reviewing captured data.
+To see Fieldgrid in action from both the office and field perspectives:
+
+1. As an admin:
+   - Follow **Admin job lifecycle** to move your test job through creation, assignment, and completion.
+2. As a technician (or test technician account):
+   - Follow **Technician daily workflow** to:
+     - See the assigned job.
+     - Complete work orders.
+     - Add notes and photos.
+3. Back as an admin:
+   - Review time, parts, and any expenses (if configured).
+   - Practice creating a **draft invoice** using **Admin invoicing and billing**.
+
+This gives you a full loop from work planning to billing on a safe, test job.
 
 ## Next steps
 
-- Read **Fieldgrid concepts** to understand how fields, tasks, sensors, and roles relate.
-- Explore the **API reference** if you plan to integrate Fieldgrid with existing tools.
+- Read **Fieldgrid concepts** to understand how customers, projects, jobs, work orders, jobsites, time, and inventory fit together.
+- Follow **Admin getting started** or **Technician getting started** for a deeper first‑week path.
+- Explore the **API reference** if you plan to integrate Fieldgrid with existing tools or internal systems.
 
