@@ -22,7 +22,17 @@
           {
             "group": "Getting started",
             "pages": [
-              "getting-started"
+              "getting-started",
+              "guides/admin-getting-started",
+              "guides/technician-getting-started"
+            ]
+          },
+          {
+            "group": "Solutions by role",
+            "pages": [
+              "guides/solutions-admins",
+              "guides/solutions-technicians",
+              "guides/solutions-leaders"
             ]
           },
           {
@@ -63,6 +73,15 @@
               "guides/ai-assistant-alex",
               "guides/notifications-and-announcements",
               "guides/superadmin-and-demo-access"
+            ]
+          },
+          {
+            "group": "FAQ & troubleshooting",
+            "pages": [
+              "guides/faq",
+              "guides/troubleshooting-missing-job",
+              "guides/troubleshooting-time-entries",
+              "guides/troubleshooting-invoice-total"
             ]
           }
         ]
