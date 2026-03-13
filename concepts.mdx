@@ -1,47 +1,162 @@
 ---
 title: "Fieldgrid concepts"
-description: "Core domain concepts in Fieldgrid and how they relate: fields, tasks, sensors, and roles."
+description: "Core domain concepts in Fieldgrid and how they relate across the web app and backend."
 ---
 
-## Fields
+## Organizations, users, and roles
 
-Fields are the primary spatial unit in Fieldgrid. They typically represent a physical area where work is planned and data is collected.
+Fieldgrid is multi-tenant: everything happens inside an **organization**.
 
-- Each field can have metadata such as crop, area, and location.
-- Tasks, sensor readings, and reports are usually scoped to a specific field.
+- **Organizations**
+  - Represent a customer account that owns projects, jobs, users, and configuration.
+  - Modeled in the backend under `app/organizations` and exposed via `/api/v1/organizations`.
+  - Frontend type: `Organization` in `fieldgrid-react/src/types/index.ts`.
+- **Users**
+  - People who log into Fieldgrid.
+  - Carry a platform role such as `owner`, `admin`, `technician`, `project_manager`, `supervisor`, or `superadmin` (`User.role` in `src/types/index.ts` and backend roles).
+  - Belong to one or more organizations and may have organization-specific roles and permissions.
+- **Roles and permissions**
+  - Roles such as **admin**, **technician**, **project_manager**, and **supervisor** shape what users can see and do.
+  - Route-level access is enforced in the frontend via `canAccessRoute` (see `src/utils/routing.ts`) and in the backend via role-aware endpoints.
 
-## Tasks
+## Customers, projects, jobs, and work orders
 
-Tasks represent units of work to be performed in the field, such as scouting, spraying, or sampling.
+Fieldgrid models operational work in a hierarchy, as described in the backend README:
 
-- Tasks have assignees, due dates, statuses, and checklists.
-- Tasks can be created manually or via automations.
-- Completed tasks generate data that can be surfaced in reports.
+> Customer → Project → Job → Work Order, with Jobsites attached to jobs.
 
-## Sensors
+- **Customers**
+  - Client accounts you serve.
+  - Backend module: `app/customers` with `/api/v1/customers`.
+  - Frontend type: `Customer` in `src/types/index.ts`.
+- **Projects**
+  - Group related jobs for a customer.
+  - Carry dates, budgets, and a project manager.
+  - Backend module: `app/projects` with `/api/v1/projects`.
+  - Frontend type: `Project` in `src/types/index.ts`.
+- **Jobs**
+  - Operational units within a project.
+  - Represent a body of work with status, priority, locations, and assignments.
+  - Backend module: `app/jobs` with `/api/v1/jobs`.
+  - Frontend type: `Job` in `src/types/index.ts`.
+- **Work Orders**
+  - Field-execution units (tasks/subtasks) assigned to technicians.
+  - Backend module: `app/work_orders` with `/api/v1/work-orders`.
+  - Frontend type: `WorkOrder` in `src/types/index.ts`.
+- **Jobsites**
+  - Physical locations linked to jobs.
+  - Backend module: `app/jobsites` with `/api/v1/jobsites`.
+  - Frontend types: `Jobsite` and `JobsiteDetails` in `src/types/index.ts`.
 
-Sensors are data sources connected to a field or group of fields (e.g., soil moisture probes, weather stations).
+These concepts show up throughout the UI:
 
-- Sensors stream measurements into Fieldgrid.
-- Each sensor belongs to a type (e.g., temperature, moisture) and may be associated with one or more fields.
-- Sensor data powers dashboards, alerts, and decision support.
+- Admins work with customers, projects, jobs, and work orders via `/admin` pages.
+- Technicians see their assigned jobs and work orders under `/technician` routes.
 
-## Roles and permissions
+## Time tracking
 
-Roles define what a user can see and do.
+Fieldgrid includes built-in time tracking:
 
-- Common roles: field tech, manager, admin.
-- Fine-grained permissions control access to configuration, data export, and API keys.
+- **Time entries**
+  - Represent clock-in/clock-out sessions for technicians, often linked to work orders.
+  - Backend: `app/clock` with `/api/v1/clock`.
+  - Frontend type: `TimeEntry` in `src/types/index.ts`.
+  - Track:
+    - Start and end times.
+    - Breaks.
+    - Statuses like `draft`, `submitted`, `approved`, `rejected`.
+  - Used by:
+    - Technicians (for daily workflow and clock screens).
+    - Admins (for approvals and reporting).
 
-## Organizations and teams
+## Checklists, logs, and evidence
 
-Organizations group users, fields, and configuration under a single tenant.
+To standardize and document work, Fieldgrid uses:
 
-- Most configuration (roles, integrations, default settings) is scoped at the organization level.
-- Users can belong to multiple organizations, switching between them as needed.
+- **Checklists**
+  - Templates that define steps and required evidence for a given job or work type.
+  - Backend: `app/checklists` with `/api/v1/checklists`.
+  - Frontend types:
+    - `Checklist`, `ChecklistItem`, `ChecklistTemplate`, `ChecklistInstance`, `ChecklistInstanceItem` in `src/types/index.ts`.
+- **Logs**
+  - Site logs such as daily reports, incidents, maintenance notes, and inspections.
+  - Backend: modeled as **Logs** in the database schema.
+  - Frontend type: `Log` in `src/types/index.ts`.
+- **Evidence**
+  - Photos, notes, and signatures captured as proof of work.
+  - Frontend type: `Evidence` in `src/types/index.ts`.
+
+These concepts support compliance, quality assurance, and communication across jobs and jobsites.
+
+## Inventory and expenses
+
+Fieldgrid tracks materials and job-related costs via:
+
+- **Inventory**
+  - Items, stock levels, and part requests.
+  - Backend: inventory modules and endpoints (for example, item and transaction APIs).
+  - Frontend types:
+    - Inventory and part requests in `src/types/inventory/*`.
+- **Expenses**
+  - Out-of-pocket costs like travel, tools, or materials.
+  - Backend: expense endpoints.
+  - Frontend types: `Expense`, `ExpenseAttachment`, and related filter/summary types in `src/types/index.ts`.
+
+Inventory and expenses feed into:
+
+- Job costing and profitability.
+- Invoice line items for customers.
+
+## Documents, resources, and library
+
+Fieldgrid centralizes documents and reference material:
+
+- **Resources**
+  - Documents, media, and site files attached to jobs, projects, or jobsites.
+  - Backend: `app/resources`.
+  - Frontend types: `resources` domain in `src/types/resources/resources.ts`.
+- **Library**
+  - A curated library of documents such as manuals, procedures, and safety protocols.
+  - Frontend types: `LibraryDocument`, `LibraryCategory`, and `LibraryFilter` in `src/types/index.ts`.
+
+Resources and library entries are used by:
+
+- Technicians in the field to access instructions.
+- The AI assistant (Alex) as context for answering questions.
+
+## Notifications, activities, and announcements
+
+Fieldgrid keeps users informed with:
+
+- **Notifications**
+  - In-app alerts sent to specific users.
+  - Backend: `app/notifications`.
+  - Frontend types: `AppNotification` and domain-specific notification types.
+- **Activities and audit logs**
+  - Track who did what and when for jobs and other entities.
+  - Backend: activity and audit modules.
+  - Frontend types: `JobLogEntry` and activity types in `src/types/activities/*`.
+- **Announcements**
+  - Broadcast messages to organizations or globally (especially via super admin).
+  - Frontend types: `announcements` domain in `src/types/announcements/announcements.ts`.
+
+## AI assistant (Alex)
+
+Alex is the AI layer on top of Fieldgrid’s data:
+
+- Backend: `app/alex` and AI endpoints under `/api/v1/ai` and `/api/v1/alex`.
+- Frontend types:
+  - `AIMessage`, `AIConversation` in `src/types/index.ts`.
+  - Additional types under `src/types/ai/*` and `src/types/alex/*`.
+
+Alex uses:
+
+- Job, jobsite, checklist, and document context to answer questions.
+- Uploaded documents for retrieval-augmented generation (RAG).
 
 ## How concepts fit together
 
-- Work happens in **fields**, driven by **tasks**, instrumented by **sensors**, and executed by users with specific **roles** inside an **organization**.
-- The API and internal architecture mirror these concepts, so understanding them here will make the rest of the docs easier to follow.
+- Organizations contain **customers**, which contain **projects**, which contain **jobs** and **jobsites**, which in turn have **work orders**, **checklists**, **time entries**, **logs**, **resources**, and **expenses**.
+- Users with various **roles** interact with these entities through the web app, mobile app, and APIs.
+- Notifications, announcements, and AI sit on top to orchestrate and enhance workflows.
 
