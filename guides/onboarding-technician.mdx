@@ -1,0 +1,130 @@
+---
+title: "Technician onboarding: join an existing organization"
+description: "How technicians join an existing Fieldgrid organization, from invite links to join requests and approval."
+---
+
+## Overview
+
+This guide describes the **technician onboarding flow** for users who are joining an existing organization instead of creating a new one.
+
+It covers:
+
+- Accepting invites or requesting to join.
+- Providing personal information.
+- Waiting for and receiving approval.
+- Landing on the technician dashboard.
+
+## Entry points
+
+Technicians can reach the onboarding flow in two main ways:
+
+- **Invite-based**
+  - Via email invite links sent by an admin.
+  - Links typically land on invite-accept screens, which then route into onboarding.
+- **Self-serve join request**
+  - By signing up and choosing “Join an existing company” during onboarding.
+
+Routes for this flow live under:
+
+- `/onboarding/join/*`
+
+Route access is governed by:
+
+- `ProtectedRoute` in `fieldgrid-react/src/App.tsx`
+- Onboarding-related flags in `useAuthStore`
+
+## Key screens
+
+Technician onboarding consists of several pages under `fieldgrid-react/src/pages/onboarding/join/`:
+
+- `PersonalInformationPage.tsx`
+- `JoinCompanyPage.tsx`
+- `ConfirmJoinPage.tsx`
+- `RequestSentPage.tsx`
+- `ApprovedPage.tsx`
+- `AccountSuccessPage.tsx`
+
+There is also an **invite acceptance** experience that may live in separate pages (e.g., `InviteAcceptPage`).
+
+## Step-by-step flow
+
+### 1. Personal information
+
+On **PersonalInformationPage**:
+
+- The technician enters or confirms:
+  - First and last name.
+  - Contact details.
+  - Optional role or specialization.
+- Data is validated with Zod and `react-hook-form`.
+
+### 2. Select or search for a company
+
+On **JoinCompanyPage**:
+
+- The technician selects the company they want to join.
+- Depending on configuration, they may:
+  - Choose from a list of organizations they have been invited to.
+  - Search for an organization by name or invite code.
+- This screen calls organization-related APIs to fetch available organizations and validate options.
+
+### 3. Confirm join request
+
+On **ConfirmJoinPage**:
+
+- The technician reviews:
+  - Organization name.
+  - Expected role (e.g., technician).
+- Submitting this step:
+  - Creates a join request in the backend.
+  - Updates local state using `joinRequestStore` (`src/stores/joinRequestStore.ts`) and `useAuthStore`.
+
+### 4. Request sent
+
+On **RequestSentPage**:
+
+- The UI clearly shows that:
+  - A join request has been sent.
+  - An admin must approve access.
+- It may periodically poll or instruct the user to check back after approval.
+
+### 5. Approval and success
+
+On **ApprovedPage** and **AccountSuccessPage**:
+
+- After an admin approves the join request in the web app:
+  - The technician’s onboarding flags are cleared.
+  - They can proceed into the technician experience.
+- The success pages confirm:
+  - Organization they’ve joined.
+  - Next steps (e.g., view schedule, open jobs, and complete their first time entry).
+
+### 6. Landing experience
+
+Once onboarding is complete:
+
+- The technician is redirected on subsequent logins to:
+  - `/technician/dashboard`
+- Route selection is driven by:
+  - `getDashboardRoute(user)` in `src/utils/routing.ts`
+
+## Backend touchpoints (high level)
+
+During technician onboarding, the frontend coordinates with backend modules such as:
+
+- `Organizations` – to find and represent organizations.
+- `Users` – to update the user’s organization and role.
+- `Invites` / join requests – to create and track join requests.
+
+Detailed endpoints for these actions will live in:
+
+- **API reference → Users**
+- **API reference → Organizations**
+- **API reference → Invites / Join Requests** (if modeled separately)
+
+## Related documentation
+
+- **Authentication, MFA, and email verification**
+- **Admin onboarding: create a new organization**
+- **Technician daily workflow**
+

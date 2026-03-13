@@ -1,0 +1,256 @@
+---
+title: "Authentication, MFA, and email verification"
+description: "How users sign in to Fieldgrid, complete MFA, and verify their email, with links to key screens and backend APIs."
+---
+
+## Overview
+
+Fieldgrid uses email + password authentication with optional multi-factor authentication (MFA) and email verification.
+
+From the user’s perspective, the flow goes through:
+
+- Visiting the **auth page** to sign in or sign up.
+- (Optional) Completing **MFA setup** or **MFA challenge**.
+- Clicking links from e## Alex Frontend Context & Prompting Guide
+
+This guide defines exactly how the **dedicated Alex UI / global Alex flow** should build prompts for backend and display chat history to users.
+
+---
+
+## 1. Contract: IDs in, names out
+
+- Frontend SHOULD send job/project references as IDs when known:
+  - Job: `@JOB_<id>`
+  - Project: `#PRJ_<id>`
+- Backend resolves IDs to actual entities and replaces references with friendly names for LLM-facing content.
+- Backend persists:
+  - `raw_content` (canonical, may contain IDs)
+  - `content` (display-friendly, names/titles)
+- Frontend should display `content` to users.
+
+This removes resolver API pressure from frontend and keeps backend context deterministic.
+
+---
+
+## 2. Prompt format for dedicated Alex UI
+
+When Alex UI has selected context (picker, chip, sidebar, etc.):
+
+- Selected job:
+  - Append `@<jobId>` in prompt sent to backend.
+- Selected project:
+  - Append `#<projectId>` in prompt sent to backend.
+
+Example:
+
+- User types in Alex: `"What is the risk status here?"`
+- Selected job: `JOB_UHXDCF1W`
+- Prompt sent: `"What is the risk status here? @JOB_UHXDCF1W"`
+
+If no context is selected:
+
+- Send raw user text.
+- Backend still supports user-typed `@job-name` and `#project-name` as fallback.
+
+---
+
+## 3. Display behavior in chat history
+
+- Frontend should render the server-provided `content` field (friendly names/titles).
+- Frontend should not attempt to re-resolve IDs for message history display.
+- If a future feature needs exact canonical references (replay/edit/analytics), use backend `raw_content`.
+
+---
+
+## 4. Why this approach
+
+- **Clarity for users**: Alex responses and history reference names, not IDs.
+- **Determinism for backend**: canonical IDs are still stored internally.
+- **Fewer frontend API calls**: no extra resolver round trips for history rendering.
+- **Safer with duplicate names**: backend can keep unambiguous canonical references while presenting human-friendly text.
+
+---
+
+## 5. Reference examples
+
+- Job ID reference (preferred): `@JOB_6eNL3O77`
+- Project ID reference (preferred): `#PRJ_ZAR27C1f`
+- Name fallback (supported): `@Phase-1-Prep`, `#Multi-phase-Upgrade`
+## Alex Frontend Context & Prompting Guide
+
+This guide defines exactly how the **dedicated Alex UI / global Alex flow** should build prompts for backend and display chat history to users.
+
+---
+
+## 1. Contract: IDs in, names out
+
+- Frontend SHOULD send job/project references as IDs when known:
+  - Job: `@JOB_<id>`
+  - Project: `#PRJ_<id>`
+- Backend resolves IDs to actual entities and replaces references with friendly names for LLM-facing content.
+- Backend persists:
+  - `raw_content` (canonical, may contain IDs)
+  - `content` (display-friendly, names/titles)
+- Frontend should display `content` to users.
+
+This removes resolver API pressure from frontend and keeps backend context deterministic.
+
+---
+
+## 2. Prompt format for dedicated Alex UI
+
+When Alex UI has selected context (picker, chip, sidebar, etc.):
+
+- Selected job:
+  - Append `@<jobId>` in prompt sent to backend.
+- Selected project:
+  - Append `#<projectId>` in prompt sent to backend.
+
+Example:
+
+- User types in Alex: `"What is the risk status here?"`
+- Selected job: `JOB_UHXDCF1W`
+- Prompt sent: `"What is the risk status here? @JOB_UHXDCF1W"`
+
+If no context is selected:
+
+- Send raw user text.
+- Backend still supports user-typed `@job-name` and `#project-name` as fallback.
+
+---
+
+## 3. Display behavior in chat history
+
+- Frontend should render the server-provided `content` field (friendly names/titles).
+- Frontend should not attempt to re-resolve IDs for message history display.
+- If a future feature needs exact canonical references (replay/edit/analytics), use backend `raw_content`.
+
+---
+
+## 4. Why this approach
+
+- **Clarity for users**: Alex responses and history reference names, not IDs.
+- **Determinism for backend**: canonical IDs are still stored internally.
+- **Fewer frontend API calls**: no extra resolver round trips for history rendering.
+- **Safer with duplicate names**: backend can keep unambiguous canonical references while presenting human-friendly text.
+
+---
+
+## 5. Reference examples
+
+- Job ID reference (preferred): `@JOB_6eNL3O77`
+- Project ID reference (preferred): `#PRJ_ZAR27C1f`
+- Name fallback (supported): `@Phase-1-Prep`, `#Multi-phase-Upgrade`
+
+---
+
+## 6. Terminology note
+
+Work order labels are organization-specific (`work_order_label_config`) and are handled by backend context/prompting. Frontend does not need to send extra terminology hints.
+
+ALEX_FRONTEND_CONTEXT_GUIDE.md
+---
+
+## 6. Terminology note
+
+Work order labels are organization-specific (`work_order_label_config`) and are handled by backend context/prompting. Frontend does not need to send extra terminology hints.
+
+ALEX_FRONTEND_CONTEXT_GUIDE.mdmail to **verify their email address**.
+- Being redirected into the correct dashboard based on their role.
+
+## Entry points
+
+- **Public auth route**: `/auth` (and `/login` as an alias).
+- **Email verification**: links sent to the user’s inbox, landing on `/verify-email` and related pages.
+- **Password reset**: `/forgot-password` and `/reset-password`.
+
+## Key screens
+
+- **Sign-in / Sign-up**
+  - Web: `AuthPage` and `SignInForm` / `SignUpForm` (`fieldgrid-react/src/pages/AuthPage.tsx`, `src/pages/auth/SignInForm.tsx`, `src/pages/auth/SignUpForm.tsx`).
+- **MFA setup and challenge**
+  - Web: `MfaSetupPage`, `MfaChallengePage` (`src/pages/auth/MfaSetupPage.tsx`, `src/pages/auth/MfaChallengePage.tsx`).
+- **Email verification**
+  - Web: `EmailVerificationPage`, `EmailVerificationSentPage` (`src/pages/EmailVerificationPage.tsx`, `src/pages/auth/EmailVerificationSentPage.tsx`).
+- **Password reset**
+  - Web: `ForgotPasswordPage`, `ResetPasswordPage` (`src/pages/ForgotPasswordPage.tsx`, `src/pages/ResetPasswordPage.tsx`).
+
+## How the flow works
+
+### 1. Public access and route guarding
+
+- Unauthenticated users are allowed to access:
+  - `/auth`, `/login`
+  - `/forgot-password`, `/reset-password`
+  - Email verification and invite-accept pages
+  - Pricing, contact, and public shared links
+- Once a user successfully authenticates, they are redirected to the correct dashboard:
+  - Technician → `/technician/dashboard`
+  - Superadmin → `/superadmin/dashboard`
+  - Everyone else → `/admin/dashboard`
+- The routing utility functions that decide this live in:
+  - `fieldgrid-react/src/utils/routing.ts`
+  - The `PublicRoute` / `ProtectedRoute` wrappers in `src/App.tsx`.
+
+### 2. Sign in or sign up
+
+On the **Sign in** tab:
+
+- Users enter their email and password.
+- The form is validated with Zod schemas and `react-hook-form`.
+- The `useAuthStore.login` action is called, which:
+  - Calls the backend login API.
+  - Stores the access token in memory.
+  - Updates the authenticated user state.
+
+On the **Sign up** tab:
+
+- New users supply basic profile information and a password.
+- The frontend calls the **backend registration API** and then prompts email verification if required.
+
+### 3. Multi-factor authentication (MFA)
+
+If MFA is enabled for the user:
+
+- After a successful username/password login, the user is redirected to the **MFA challenge** screen.
+- The frontend prompts the user for their verification code.
+- The `useAuthStore.completeMfaChallenge` action calls the corresponding backend API to validate the code.
+- On success, the user is redirected to their dashboard; on failure, errors are surfaced inline.
+
+### 4. Email verification
+
+- After registration or when an email change is detected, Fieldgrid sends a verification email.
+- Links in that email lead to the **Email verification** screen, which:
+  - Calls a backend verification endpoint using the token embedded in the URL.
+  - Shows a success or failure message.
+- The user can request a new verification email from the **Email verification sent** screen.
+
+### 5. Password reset
+
+- From the **Forgot password** page:
+  - The user submits their email.
+  - A reset email is sent if the account exists.
+- From the **Reset password** page:
+  - The user follows the link from email.
+  - Supplies a new password, which is validated and sent to the backend.
+  - On success, the user can sign in with their new credentials.
+
+## Backend APIs (high level)
+
+The frontend auth flows talk to the **Fieldgrid Backend API** (`fieldgrid-fastapi`), using endpoints such as:
+
+- `POST /api/v1/users/login` – authenticate and fetch tokens.
+- `POST /api/v1/users/register` – create a new user.
+- `POST /api/v1/users/mfa/challenge` – validate MFA codes.
+- `POST /api/v1/users/verify-email` – confirm email verification tokens.
+- `POST /api/v1/users/forgot-password` – request a reset email.
+- `POST /api/v1/users/reset-password` – set a new password.
+
+Full details will live in the **API reference → Users & auth** section.
+
+## Related documentation
+
+- **Concepts**: Users, organizations, roles, and permissions.
+- **User guides**: Admin and technician onboarding flows.
+- **Internal docs**: Auth architecture and security practices.
+

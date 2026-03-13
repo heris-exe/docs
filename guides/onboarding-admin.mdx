@@ -1,0 +1,123 @@
+---
+title: "Admin onboarding: create a new organization"
+description: "How an admin signs up, sets up a new Fieldgrid organization, and configures the workspace for their team."
+---
+
+## Overview
+
+This guide covers the **admin onboarding flow** for new customers:
+
+- Creating a new organization.
+- Providing basic company details.
+- Customizing the workspace.
+- Choosing a billing path.
+
+The experience is implemented in the web app under the `/onboarding/admin` routes in `fieldgrid-react`.
+
+## Entry points
+
+- After successful sign-up, if the user has no organization and onboarding is required, they are redirected to:
+  - `/onboarding` → admin onboarding branch.
+- Admin onboarding screens live under:
+  - `/onboarding/admin/*`
+
+Route access is controlled by:
+
+- `ProtectedRoute` in `fieldgrid-react/src/App.tsx`
+- Onboarding flags in `useAuthStore` (e.g., `onboardingRequired`)
+- `OnboardingRouteGuard` where appropriate
+
+## Key screens
+
+- `AdminPersonalPersonalizationPage` (`src/pages/onboarding/admin/AdminPersonalPersonalizationPage.tsx`)
+- `AdminCompanyDetailsPage` (`src/pages/onboarding/admin/AdminCompanyDetailsPage.tsx`)
+- `AdminCompanyCustomizationPage` (`src/pages/onboarding/admin/AdminCompanyCustomizationPage.tsx`)
+- `AdminBillingChoicePage` (`src/pages/onboarding/admin/AdminBillingChoicePage.tsx`)
+- `AdminAccountCreatedPage` (`src/pages/onboarding/admin/AdminAccountCreatedPage.tsx`)
+- `WorkspaceSetupSingle` (`src/pages/onboarding/WorkspaceSetupSingle.tsx`)
+
+## Step-by-step flow
+
+### 1. Personalization
+
+On **AdminPersonalPersonalizationPage**:
+
+- The admin confirms or edits:
+  - Name
+  - Role
+  - Basic preferences that can be used for tailoring the experience.
+- Data is validated via a Zod schema and submitted with `react-hook-form`.
+
+### 2. Company details
+
+On **AdminCompanyDetailsPage**:
+
+- The admin provides organization-level details:
+  - Company name
+  - Industry or vertical
+  - Default time zone (using `useOrganizationTimezone`)
+  - Optional additional metadata (e.g., company size).
+- The form uses schemas from `src/schemas/organization.ts` (for example, `organizationCreateSchema`).
+- Submitting this page creates the organization via backend APIs and updates org context in `useAuthStore`.
+
+### 3. Company customization
+
+On **AdminCompanyCustomizationPage**:
+
+- The admin can customize visual and configuration details, such as:
+  - Branding or logo (if supported).
+  - Default settings for jobs, notifications, or regions.
+- Preferences collected here are persisted via organization-related APIs (e.g., `organizations` module in the backend).
+
+### 4. Billing choice
+
+On **AdminBillingChoicePage**:
+
+- The admin chooses how to start:
+  - Free trial.
+  - Immediate subscription.
+  - Contact sales or request a demo.
+- The page integrates with the billing system:
+  - Shows available plans and seat options.
+  - Links or redirects to billing checkout routes like `/billing/upgrade` as needed.
+- Billing data connects to:
+  - `billingStore` (`src/stores/billingStore.ts`)
+  - Billing APIs (`src/api/billing/*.ts`)
+
+### 5. Account created and workspace setup
+
+On **AdminAccountCreatedPage**:
+
+- A confirmation screen summarizes:
+  - Organization name.
+  - Trial or billing status.
+  - Next recommended steps (inviting team, creating first projects or jobs).
+
+On **WorkspaceSetupSingle**:
+
+- The admin can perform initial setup tasks:
+  - Invite key team members.
+  - Create an initial customer or project.
+  - Configure basic resources.
+
+After these steps:
+
+- Onboarding flags in `useAuthStore` are cleared (`onboardingRequired` is set to false).
+- The admin is redirected to `/admin/dashboard` on subsequent logins.
+
+## Backend touchpoints (high level)
+
+During admin onboarding, the frontend interacts with backend modules such as:
+
+- `Organizations` (`/api/v1/organizations`)
+- `Users` (`/api/v1/users`)
+- `Billing`/subscription-related endpoints
+
+These will be documented in detail under **API reference → Organizations**, **API reference → Users**, and **API reference → Billing**.
+
+## Related documentation
+
+- **Authentication, MFA, and email verification**
+- **Technician onboarding: join existing organization**
+- **Fieldgrid concepts: organizations, users, roles, and permissions**
+

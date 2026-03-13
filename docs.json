@@ -32,10 +32,37 @@
             ]
           },
           {
-            "group": "User guides",
+            "group": "Authentication & onboarding",
             "pages": [
-              "guides/onboard-farm",
-              "guides/debug-sensor-ingestion"
+              "guides/auth-and-mfa",
+              "guides/onboarding-admin",
+              "guides/onboarding-technician"
+            ]
+          },
+          {
+            "group": "Admin workflows",
+            "pages": [
+              "guides/admin-dashboard-and-navigation",
+              "guides/admin-job-lifecycle",
+              "guides/admin-inventory-management",
+              "guides/admin-invoicing-and-billing",
+              "guides/admin-scheduling-and-resources"
+            ]
+          },
+          {
+            "group": "Technician workflows",
+            "pages": [
+              "guides/technician-daily-workflow",
+              "guides/technician-time-tracking",
+              "guides/technician-inventory-and-expenses"
+            ]
+          },
+          {
+            "group": "AI, notifications & admin",
+            "pages": [
+              "guides/ai-assistant-alex",
+              "guides/notifications-and-announcements",
+              "guides/superadmin-and-demo-access"
             ]
           }
         ]
