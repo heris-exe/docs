@@ -1,0 +1,128 @@
+---
+title: "Admin scheduling and resources"
+description: "How admins schedule jobs and work orders, and manage shared resources and documents."
+---
+
+## Overview
+
+Admins use Fieldgrid to coordinate **when work happens** and **which resources technicians use**.
+
+This guide covers:
+
+- Scheduling jobs and work orders.
+- Viewing and managing schedules.
+- Managing shared resources and documents.
+
+The main surfaces are `/admin/schedule` and `/admin/resources` in the web app.
+
+## Entry points
+
+- **Schedule**
+  - `/admin/schedule` → admin scheduling view.
+- **Resources**
+  - `/admin/resources` → document and resources library.
+- From jobs, projects, and work orders:
+  - Contextual links to schedule views.
+  - Attachments and document references.
+
+## Key screens
+
+### Schedule
+
+- Page: `AdminSchedule` (`fieldgrid-react/src/pages/AdminSchedule.tsx`).
+- Typically shows:
+  - Job and work-order assignments plotted over time.
+  - Technician availability.
+  - Filters by project, customer, or technician.
+
+### Resources
+
+- Page: `AdminResources` (`fieldgrid-react/src/pages/AdminResources.tsx`).
+- Components:
+  - `ResourcesFolderTreeView.tsx` – hierarchical folder navigation.
+  - `DocumentFileIcon.tsx`, `DocumentAddModal.tsx`, `DocumentBatchUploadModal.tsx` – document workflows.
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - Jobs and schedules: `src/types/jobs/job.ts`, `src/types/jobs/schedule.ts`.
+  - Resources and documents: `src/types/resources/resources.ts`.
+- API modules:
+  - Scheduling:
+    - `src/api/jobs/schedules.ts`
+  - Resources and documents:
+    - `src/api/resources/resources.ts`
+    - `src/api/resources/index.ts`
+- Hooks:
+  - `src/hooks/useResourcesGroupedData.ts`
+  - `src/hooks/useDocuments.ts`, `src/hooks/useDocumentsQuery.ts`, `src/hooks/useDocumentThumbnail.ts`
+  - `src/hooks/useJobs.ts`, `src/hooks/useWorkOrders.ts` (for schedule views)
+
+## Scheduling workflows
+
+### 1. View the schedule
+
+In `/admin/schedule`, admins can:
+
+- See a calendar or timeline of:
+  - Jobs.
+  - Work orders.
+  - Assignments by technician.
+- Use filters and time-range selectors to focus on:
+  - Specific projects or customers.
+  - Individual technicians or teams.
+
+### 2. Assign and adjust work
+
+- From the schedule view:
+  - Create new assignments for jobs or work orders.
+  - Drag-drop or edit existing entries (if supported by the UI).
+- Under the hood:
+  - Changes are persisted through `jobs/schedules` APIs.
+  - Updates are reflected in technician dashboards and time tracking flows.
+
+### 3. Coordinate with other modules
+
+- Scheduling integrates with:
+  - **Job lifecycle** – ensuring that scheduled work lines up with job statuses.
+  - **Time tracking** – linking scheduled work to actual time entries.
+  - **Notifications** – informing technicians of schedule changes.
+
+## Resource management workflows
+
+### 1. Organize resources
+
+- Admins can create and manage a folder structure:
+  - Per customer or project.
+  - Per job type or standard operating procedure (SOP) category.
+- `ResourcesFolderTreeView` and related components expose:
+  - Folder hierarchy.
+  - Document lists.
+
+### 2. Add and update documents
+
+- Using `DocumentAddModal` or `DocumentBatchUploadModal`, admins can:
+  - Upload new files (images, PDFs, etc.).
+  - Add metadata or tags.
+- Thumbnails and previews are supported via:
+  - `useDocumentThumbnail.ts` and UI components such as `DocumentFileIcon.tsx`.
+
+### 3. Link resources to jobs and work orders
+
+- Documents can be referenced in:
+  - Job details.
+  - Work order instructions.
+  - Technician resources screens.
+
+This creates a single source of truth for:
+
+- Checklists and SOPs.
+- Manuals and drawings.
+- Photos and historical records.
+
+## Related documentation
+
+- **Admin job lifecycle** – where scheduling decisions originate.
+- **Technician daily workflow** – how technicians see and use schedules and resources.
+- **AI assistant (Alex)** – using resources as context for AI answers.
+

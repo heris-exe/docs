@@ -1,0 +1,131 @@
+---
+title: "Super admin controls and demo access"
+description: "How super admins manage organizations, billing plans, users, and demo environments in Fieldgrid."
+---
+
+## Overview
+
+Super admins manage the **Fieldgrid platform itself**, not just a single organization. They are responsible for:
+
+- Managing organizations and their billing plans.
+- Controlling access to demo environments.
+- Overseeing global audit logs and announcements.
+
+This guide explains the super admin surfaces under `/superadmin` and how demo access fits into the overall experience.
+
+## Entry points
+
+- Super admin namespace:
+  - `/superadmin/dashboard`
+  - `/superadmin/companies`
+  - `/superadmin/plans-billing`
+  - `/superadmin/users`
+  - `/superadmin/demo-access`
+  - `/superadmin/audit-logs`
+  - `/superadmin/announcements`
+  - `/superadmin/settings`
+  - `/superadmin/help`
+
+Access is limited to users with the super admin role; route-level checks are enforced via:
+
+- `canAccessRoute` and route guards in `src/utils/routing.ts` and `src/App.tsx`.
+
+## Key screens
+
+- `SuperAdminDashboard` (`fieldgrid-react/src/pages/SuperAdminDashboard.tsx`)
+- `SuperAdminCompanies` (`src/pages/SuperAdminCompanies.tsx`)
+- `SuperAdminPlansBilling` (`src/pages/SuperAdminPlansBilling.tsx`)
+- `SuperAdminUserManagement` (`src/pages/SuperAdminUserManagement.tsx`)
+- `SuperAdminDemoAccess` (`src/pages/SuperAdminDemoAccess.tsx`)
+- `SuperAdminAuditLogs` (`src/pages/SuperAdminAuditLogs.tsx`)
+- `SuperAdminAnnouncements` (`src/pages/SuperAdminAnnouncements.tsx`)
+- `SuperAdminSettings` (`src/pages/SuperAdminSettings.tsx`)
+
+Supporting components:
+
+- `SuperAdminCompanyBillingPanel.tsx`
+- `SuperAdminManualSubscriptionModal.tsx`
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - Admin billing: `src/types/billing/admin.ts`
+  - Demo access: `src/types/demo-access.ts` (or similar, depending on implementation).
+- API modules:
+  - `src/api/billing/admin.ts`
+  - `src/api/demo-access/demoAccess.ts`
+  - Admin analytics: `src/api/analytics/superadmin.ts`
+  - Announcements and audit: shared with other roles (`announcements`, `activities` APIs).
+
+## Super admin workflows
+
+### 1. Manage organizations and billing plans
+
+From `/superadmin/companies` and `/superadmin/plans-billing`:
+
+- View the list of organizations.
+- Inspect:
+  - Current plan.
+  - Seat counts and active modules.
+  - Trial status and important billing flags.
+- Use `SuperAdminCompanyBillingPanel` and related components to:
+  - Adjust plans and seat counts.
+  - Trigger manual subscription changes (with care).
+  - View billing history at a high level.
+
+### 2. Manage users and access
+
+From `/superadmin/users`:
+
+- View all users across organizations.
+- Filter and search by:
+  - Email, role, or organization.
+- Perform privileged actions (as allowed by policy):
+  - Promote or demote roles (e.g., grant or revoke super admin).
+  - Lock or unlock accounts.
+
+### 3. Demo access workflows
+
+From `/superadmin/demo-access`:
+
+- Create and manage **demo environments** and access tokens.
+- Typical tasks:
+  - Generate demo invites or access links.
+  - Reset demo environments.
+  - View active demo sessions.
+- The frontend uses `demoAccess` APIs to coordinate with backend demo-management logic.
+
+## Global oversight
+
+### 1. Announcements
+
+From `/superadmin/announcements`:
+
+- Create platform-wide announcements.
+- Target:
+  - Specific organizations.
+  - All organizations.
+  - Specific roles.
+
+### 2. Audit logs
+
+From `/superadmin/audit-logs`:
+
+- View global audit events across organizations.
+- Filter by:
+  - Organization.
+  - User.
+  - Entity type or action type.
+
+These views are crucial for:
+
+- Security investigations.
+- Debugging multi-tenant issues.
+- Ensuring compliance and governance.
+
+## Related documentation
+
+- **Admin dashboard and navigation** – how a single organization is managed.
+- **Notifications and announcements** – how announcements propagate to end users.
+- **Internal ops and runbooks** – any special procedures for demo access and platform incidents.
+

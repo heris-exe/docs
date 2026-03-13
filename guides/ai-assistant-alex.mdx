@@ -1,0 +1,113 @@
+---
+title: "AI assistant (Alex)"
+description: "How Alex, the AI assistant in Fieldgrid, helps admins and technicians with jobs, documents, and insights."
+---
+
+## Overview
+
+**Alex** is Fieldgrid’s AI assistant. It helps users:
+
+- Ask questions about jobs, documents, and procedures.
+- Generate summaries and insights.
+- Navigate context-aware suggestions from within the app.
+
+Alex surfaces in both admin and technician workflows via:
+
+- Dedicated AI pages.
+- Modals and floating action buttons (FABs).
+
+## Entry points
+
+- AI pages:
+  - `/ai` or similar route for `AIAssistantPage` (`fieldgrid-react/src/pages/AIAssistantPage.tsx`).
+  - `/ai/chat/:id` or `AIChatPage` (`src/pages/AIChatPage.tsx`) for session-specific chats.
+- In-context entry points:
+  - Alex FAB in `AppLayout` via `AlexProjectBuilderFab.tsx`.
+  - `AskAlexModal.tsx` for job- or project-specific questions.
+
+## Key screens and components
+
+- **AI assistant pages**
+  - `AIAssistantPage.tsx` – main AI console.
+  - `AIChatPage.tsx` – focused chat experience.
+- **Alex UI components**
+  - `components/alex/AskAlexModal.tsx`
+  - `components/alex/AlexProjectBuilderFab.tsx`
+  - Visual elements:
+    - `components/AlexIcon.tsx`
+    - `components/AlexAvatar.tsx`
+- **Chat primitives**
+  - `components/ui/chat.tsx`
+  - `components/ui/chat-message.tsx`
+  - `components/ui/message-input.tsx`
+  - `components/ui/message-list.tsx`
+  - `components/ui/typing-indicator.tsx`
+  - `components/ui/audio-visualizer.tsx`
+  - `components/ui/prompt-suggestions.tsx`
+- **State**
+  - `chatHistoryStore.ts` – stores recent chats and contexts.
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - `src/types/ai/ai.ts` – AI messages, sessions, and responses.
+  - `src/types/ai/timeInsights.ts`
+  - `src/types/alex/alexProjectBuilder.ts`
+- API modules:
+  - `src/api/ai/ai.ts`
+  - `src/api/ai/streaming.ts`
+  - `src/api/ai/alex.ts`
+- Hooks:
+  - AI hooks exposed in `src/hooks` (for streaming and session management).
+
+These modules talk to the AI backend in `fieldgrid-fastapi` under routes such as:
+
+- `/api/v1/ai/chat/quick`
+- `/api/v1/ai/chat/sessions`
+- `/api/v1/ai/documents`
+
+## Core workflows
+
+### 1. Ask Alex from a job or project
+
+- From a job, project, or schedule view:
+  - Click the **Ask Alex** button or FAB.
+- The `AskAlexModal`:
+  - Captures:
+    - The user’s question.
+    - Context (job ID, project ID).
+    - Optionally related documents.
+  - Sends a request to AI endpoints via `api/ai/*`.
+  - Streams back responses using `streaming` APIs where supported.
+
+### 2. Use the AI console
+
+- On the dedicated AI page:
+  - Users can:
+    - Start new chat sessions.
+    - Resume past sessions.
+    - Search previous interactions.
+  - The console uses:
+    - `chatHistoryStore` for local state.
+    - AI APIs for persistence and retrieval.
+
+### 3. Upload documents for AI context
+
+- From AI pages or admin resources:
+  - Upload documents to be used as AI context.
+- Backend support (as seen in `fieldgrid-fastapi` docs):
+  - `/api/v1/ai/documents` for document upload.
+  - Chat endpoints with optional document context parameters.
+
+### 4. Time insights and operational help
+
+- Components like `AlexTimeInsightsCard.tsx` use AI to:
+  - Summarize time tracking data.
+  - Provide recommendations or insights for admins.
+
+## Related documentation
+
+- **Resources and documents** – how content is organized for AI and users.
+- **Admin analytics** – where AI-derived insights surface.
+- **Internal AI architecture** – how AI is wired in the backend and configured.
+

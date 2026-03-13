@@ -1,0 +1,108 @@
+---
+title: "Admin inventory management"
+description: "How admins manage Fieldgrid inventory: items, stock levels, transactions, and part requests."
+---
+
+## Overview
+
+Fieldgrid’s inventory module lets admins:
+
+- Track items and stock levels across locations.
+- Approve and record inventory transactions.
+- Connect inventory usage to jobs and work orders.
+
+The primary admin surface is `/admin/inventory`, implemented in the web app’s `fieldgrid-react` repo.
+
+## Entry points
+
+- Sidebar:
+  - `/admin/inventory` → admin inventory overview.
+- Contextual:
+  - From jobs or work orders when assigning or consuming parts.
+
+## Key screens
+
+- **Inventory overview**
+  - Page: `AdminInventory` (`fieldgrid-react/src/pages/AdminInventory.tsx`).
+  - Shows:
+    - Item catalog.
+    - Current stock by location.
+    - Key metrics or alerts.
+- **Part requests and approvals**
+  - Surfaces for:
+    - Pending part requests from technicians.
+    - Approval or rejection flows.
+- **Inventory detail views**
+  - Item-level detail pages or side panels showing:
+    - Transaction history.
+    - Linked jobs/work orders.
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - Inventory items and stock: `src/types/inventory/inventory.ts`.
+  - Part requests: `src/types/inventory/part-requests.ts`.
+  - Related entities: work orders and jobs (`src/types/work-orders/*`, `src/types/jobs/*`).
+- API modules:
+  - `src/api/inventory/items.ts`
+  - `src/api/inventory/transactions.ts`
+  - `src/api/inventory/reports.ts`
+  - `src/api/inventory/part-requests.ts`
+  - `src/api/inventory/work-orders.ts`
+- Hooks:
+  - `src/hooks/useInventory.ts`
+  - `src/hooks/usePartRequests.ts`
+
+These hooks wrap the backend inventory endpoints in `fieldgrid-fastapi`, which expose inventory items, transactions, and part request APIs.
+
+## Core workflows
+
+### 1. Maintain the item catalog
+
+- Create and manage inventory items:
+  - Item name and code.
+  - Category.
+  - Units of measure.
+  - Default locations and thresholds.
+- The admin inventory UI provides:
+  - Forms to add/edit items.
+  - Bulk import capabilities (if available).
+- Changes are persisted via `items` APIs and surfaced in `useInventory` queries.
+
+### 2. Record and approve inventory transactions
+
+- Transaction types typically include:
+  - Receipts (stock coming in).
+  - Issues (stock going out).
+  - Adjustments (corrections).
+- Admins can:
+  - Create new transactions.
+  - Approve or reject proposed transactions.
+- Transactions are linked to:
+  - Jobs and work orders (for consumption).
+  - Warehouses or stock locations.
+
+### 3. Handle part requests from technicians
+
+- Technicians can request parts from the field.
+- Those requests:
+  - Appear in admin views for triage and approval.
+  - Are modeled using `part-requests` types and APIs.
+- Admins can:
+  - Approve, partially approve, or reject.
+  - Convert approved requests into inventory transactions.
+  - Notify technicians of statuses.
+
+### 4. Reporting and reconciliation
+
+- Admins can review:
+  - Historical transaction reports.
+  - Stock valuation or variance reports (where supported).
+- Reporting APIs are available via `inventory/reports.ts`.
+
+## Related documentation
+
+- **Admin job lifecycle** – where inventory usage ties into jobs and work orders.
+- **Technician inventory and expenses** – how technicians request and consume inventory.
+- **Invoicing and billing** – how parts and materials appear on invoices.
+

@@ -1,0 +1,136 @@
+---
+title: "Technician daily workflow"
+description: "A technician’s day in Fieldgrid: dashboard, jobs, schedule, resources, and communication."
+---
+
+## Overview
+
+This guide follows a technician through a typical day using Fieldgrid:
+
+- Starting from the technician dashboard.
+- Reviewing today’s jobs and schedule.
+- Completing work orders and logging work.
+- Using resources, photos, and logs to document the job.
+
+The technician experience lives under the `/technician` route namespace in `fieldgrid-react`.
+
+## Entry points
+
+- After onboarding and login, technicians land on:
+  - `/technician/dashboard`
+- From there they can navigate to:
+  - `/technician/jobs`
+  - `/technician/projects`
+  - `/technician/schedule`
+  - `/technician/resources`
+  - `/technician/inventory`
+  - `/technician/invoices`
+  - `/technician/expense`
+  - `/technician/clock`
+  - `/technician/settings`, `/technician/help`, `/technician/announcement`
+
+Routing and access are handled via:
+
+- `ProtectedRoute` and `canAccessRoute` in `src/App.tsx` and `src/utils/routing.ts`.
+
+## Key screens
+
+- `TechnicianDashboard` (`src/pages/TechnicianDashboard.tsx`)
+- `TechnicianJobs` (`src/pages/TechnicianJobs.tsx`)
+- `TechnicianJobDetails` (`src/pages/TechnicianJobDetails.tsx`)
+- `TechnicianJobLog` (`src/pages/TechnicianJobLog.tsx`)
+- `TechnicianProjects` and `TechnicianProjectDetailsPage`
+- `TechnicianSchedule` and `TechnicianClockInOut`
+- `TechnicianResources`
+- `TechnicianInventory`
+- `TechnicianInvoices`
+- `TechnicianExpense`
+- `TechnicianSettings`, `TechnicianPeople`, `TechnicianHelp`, `TechnicianAnnouncement`
+
+## Morning: review dashboard and schedule
+
+### Dashboard
+
+On `/technician/dashboard`:
+
+- The technician sees:
+  - Today’s and upcoming jobs.
+  - Quick access to recently viewed work.
+  - Time tracking or key alerts (depending on configuration).
+- The page uses hooks like:
+  - `useJobs` (filtered to technician assignments).
+  - `useActivities`, `useNotifications`, or analytics hooks as applicable.
+
+### Schedule
+
+On `/technician/schedule`:
+
+- The schedule view shows:
+  - Assigned jobs and work orders for the period.
+  - Time slots and overlapping assignments.
+
+## On the job: jobs and work orders
+
+### 1. Open assigned jobs
+
+On `/technician/jobs`:
+
+- The technician sees a list of:
+  - Assigned jobs (via `useJobs` and backend filters).
+  - Key fields: customer, project, status, due date.
+
+### 2. View job details
+
+For a specific job:
+
+- `/technician/jobs/:id` → `TechnicianJobDetails`.
+- Alternatively, `/jobs/:id` via `JobRouter`, which:
+  - Picks the correct role-specific view based on user role.
+- In job details, technicians can:
+  - See work orders, checklists, and instructions.
+  - View jobsite information and maps.
+  - Access linked documents and resources.
+
+### 3. Complete work orders and checklists
+
+- In the **Work orders** area:
+  - Technicians select a work order.
+  - Update status (in progress, completed, etc.).
+  - Fill out any checklists or forms.
+- Checklists are backed by:
+  - `checklists` types and APIs.
+  - Hooks such as `useChecklists`, `useDailySafetyChecklist`.
+
+### 4. Log notes, photos, and site logs
+
+- Through job logs and resources:
+  - Add site notes.
+  - Attach photos or documents.
+- These interactions rely on:
+  - `resources` APIs and hooks (`useDocuments`, `useDocumentsQuery`).
+  - Log or activity APIs (`useActivities`, `api/activities/*`).
+
+## Throughout the day: time and expenses
+
+- Time tracking:
+  - See **Technician time tracking** guide for details.
+- Expenses:
+  - On `/technician/expense`:
+    - Log expenses incurred on the job (mileage, materials, etc.).
+  - Backed by:
+    - `expenses` types and APIs (`src/types/expenses/*`, `src/api/expenses/expenses.ts`).
+
+## Wrap-up: review and next steps
+
+At the end of the day, technicians:
+
+- Review remaining jobs on `/technician/jobs` and `/technician/schedule`.
+- Ensure time entries and key checklists are complete.
+- Consult `/technician/resources` for any post-work documentation requirements.
+
+## Related documentation
+
+- **Technician time tracking** – clocking in/out and reviewing time entries.
+- **Technician inventory and expenses** – managing inventory usage and expenses from the field.
+- **Admin job lifecycle** – how admin actions and technician work fit together.
+

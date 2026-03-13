@@ -1,0 +1,119 @@
+---
+title: "Technician time tracking"
+description: "How technicians clock in/out, log time against jobs, and how admins review time entries."
+---
+
+## Overview
+
+Fieldgrid includes built-in **time tracking** so technicians can:
+
+- Clock in and out for their day.
+- Log time against jobs and work orders.
+- Capture breaks and travel time where applicable.
+
+Technician-facing time tracking lives primarily under `/technician/clock` and related pages, with admin review surfaces at `/admin/time-entries`.
+
+## Entry points
+
+- Technician:
+  - `/technician/clock` → clock in/out and current status.
+  - `/technician/schedule` and job views → context for where time is spent.
+- Admin:
+  - `/admin/time-entries` → time approvals and reporting.
+
+Routing and access control are shared with the rest of the `/technician` and `/admin` namespaces, governed by `ProtectedRoute` and `canAccessRoute`.
+
+## Key screens
+
+- `TechnicianClockInOut` (`fieldgrid-react/src/pages/TechnicianClockInOut.tsx`)
+- `TechnicianSchedule` (`src/pages/TechnicianSchedule.tsx`)
+- `TechnicianJobLog` (`src/pages/TechnicianJobLog.tsx`)
+- `AdminTimeEntries` (`src/pages/AdminTimeEntries.tsx`)
+
+Components:
+
+- `time-entries/ScopedTimeEntriesList.tsx`
+- `time-entries/AlexTimeInsightsCard.tsx`
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - `TimeEntry` in `src/types/index.ts`
+  - `src/types/clock/clock.ts`
+  - `src/types/clock/admin.ts`
+- API modules:
+  - `src/api/clock/clock.ts`
+  - `src/api/clock/team.ts`
+  - `src/api/clock/index.ts`
+- Hooks:
+  - `src/hooks/useClock.ts`
+
+These wrap the backend time tracking endpoints in `fieldgrid-fastapi` (`/api/v1/clock/*` and related routes).
+
+## Technician flow
+
+### 1. Clock in
+
+On `/technician/clock`:
+
+- The technician sees:
+  - Current clock status (clocked in vs clocked out).
+  - Any active job context (if applicable).
+- When they click **Clock in**:
+  - The UI calls `useClock` mutations to:
+    - Create a new time entry.
+    - Optionally associate it with a job or work order.
+
+### 2. Work on assigned jobs
+
+- As they move through jobs:
+  - Time may be:
+    - Logged continuously (one long shift).
+    - Switched between jobs or work orders using job log views.
+- Job-level logs (e.g., `/technician/jobs/:id/log`) can surface:
+  - Time summaries.
+  - Links to time entry details where needed.
+
+### 3. Breaks and clock out
+
+- From `/technician/clock`:
+  - Technicians can:
+    - Start or end breaks (if modeled in the backend).
+    - Clock out at the end of their shift.
+- The frontend updates:
+  - `TimeEntry` records via clock APIs.
+  - Local UI state in `useClock` and related hooks.
+
+## Admin review flow
+
+### 1. View time entries
+
+On `/admin/time-entries`:
+
+- Admins see:
+  - Time entries grouped by technician, date, or job.
+  - Statuses (pending, approved, rejected).
+  - Summaries for payroll or billing.
+
+### 2. Approve and correct
+
+- Admin actions typically include:
+  - Approving or rejecting entries.
+  - Editing time when corrections are needed, subject to permissions.
+- These operations are implemented via:
+  - `clock` admin APIs (`team` endpoints, where present).
+  - Admin-specific hooks or mutations around `useClock` or dedicated hooks.
+
+### 3. Downstream impact
+
+- Approved time entries can drive:
+  - Payroll calculations.
+  - Invoicing (labor line items).
+  - Analytics and utilization metrics.
+
+## Related documentation
+
+- **Technician daily workflow** – how time tracking fits into the broader day-in-the-life.
+- **Admin job lifecycle** – linking time entries to jobs and work orders.
+- **Admin invoicing and billing** – how time converts into invoice line items.
+

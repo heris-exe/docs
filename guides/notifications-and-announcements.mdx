@@ -1,0 +1,135 @@
+---
+title: "Notifications and announcements"
+description: "How Fieldgrid keeps users informed via notifications, announcements, and activity feeds."
+---
+
+## Overview
+
+Fieldgrid uses:
+
+- **Notifications** to alert users about events (assignments, comments, approvals, schedule changes).
+- **Announcements** to broadcast messages across the organization (or from super admins to all orgs).
+- **Activity and audit logs** to track changes and actions.
+
+This guide explains how these surfaces behave for admins and technicians.
+
+## Entry points
+
+- Notifications:
+  - Notification icon and dropdown in the app header.
+  - Dedicated notification or activity pages where configured.
+- Announcements:
+  - Admin:
+    - `/admin/announcement`
+  - Technician:
+    - `/technician/announcement`
+  - Super admin:
+    - `/superadmin/announcements`
+- Audit and activity:
+  - `/admin/audit-log`
+  - `/superadmin/audit-logs`
+
+## Key screens and components
+
+- **Announcements**
+  - Admin:
+    - `AdminAnnouncement` (`fieldgrid-react/src/pages/AdminAnnouncement.tsx`)
+  - Technician:
+    - `TechnicianAnnouncement` (`src/pages/TechnicianAnnouncement.tsx`)
+  - Super admin:
+    - `SuperAdminAnnouncements` (`src/pages/SuperAdminAnnouncements.tsx`)
+  - Components:
+    - `ScheduledAnnouncementsPanel.tsx`
+    - `AnnouncementComposeModal.tsx`
+- **Notifications**
+  - Components:
+    - `components/NotificationItem.tsx`
+    - Header-level notification indicator and dropdown.
+  - Hooks:
+    - `useNotifications.ts`
+    - `useWebSocketNotifications.ts`
+    - `useNotificationEntityResolver.ts`
+- **Activity and audit**
+  - Pages:
+    - `AdminAuditLog.tsx`
+    - `SuperAdminAuditLogs.tsx`
+  - Hooks:
+    - `useActivities.ts`
+    - `useAuditTrail.ts`
+
+## Data model and APIs (frontend perspective)
+
+- Types:
+  - Notifications: `src/types/notifications/notifications.ts`
+  - Announcements: `src/types/announcements/announcements.ts`
+  - Activities: `src/types/activities/activities.ts`
+  - Websockets: `src/types/websockets/websockets.ts`
+- API modules:
+  - Notifications:
+    - `src/api/notifications/notifications.ts`
+    - `src/api/notifications/devices.ts`
+    - `src/api/notifications/index.ts`
+  - Announcements:
+    - `src/api/announcements/announcements.ts`
+    - `src/api/announcements/index.ts`
+  - Activities and audit:
+    - `src/api/activities/activities.ts`
+    - `src/api/activities/index.ts`
+  - Websockets:
+    - `src/api/websockets/*` (if present)
+
+## Notification behavior
+
+### 1. Receiving notifications
+
+- The frontend subscribes to:
+  - Websocket or server-sent events via `useWebSocketNotifications`.
+  - Polling endpoints via `useNotifications`.
+- Notifications are:
+  - Rendered in header dropdowns.
+  - Counted as unread until opened.
+
+### 2. Opening and marking read
+
+- When a user clicks a notification:
+  - Actions may:
+    - Navigate to a job, project, invoice, or other entity.
+    - Mark the notification as read via notifications APIs.
+- `useNotificationEntityResolver` maps:
+  - Notification payloads to concrete app routes.
+
+## Announcement behavior
+
+### 1. Creating announcements (admin and super admin)
+
+- Admins and super admins can:
+  - Open an announcement composer.
+  - Draft text, rich content, or links.
+  - Schedule start and end times.
+  - Choose target audiences (org-wide, role-specific, etc.).
+- The composed announcements are saved via:
+  - `announcements` APIs.
+
+### 2. Viewing announcements (everyone)
+
+- On `/admin/announcement` or `/technician/announcement`:
+  - Users see active and relevant announcements.
+  - Historical announcements may also be listed.
+
+## Activity and audit logs
+
+- Admins and super admins can:
+  - Review activity logs filtered by user, entity, or date.
+  - Inspect details of:
+    - Who changed what.
+    - When, and from where.
+- These views rely on:
+  - `useActivities`, `useAuditTrail`.
+  - Activity and audit APIs in `fieldgrid-fastapi`.
+
+## Related documentation
+
+- **Admin dashboard and navigation** – where notifications and announcements live in the UI.
+- **Admin job lifecycle** – how job-related events surface as notifications.
+- **Internal runbooks** – how to use activity and audit logs during incidents.
+
