@@ -1,0 +1,36 @@
+---
+title: "Connect FieldGrid to Procore (Setup Guide)"
+description: "How to install the FieldGrid app in Procore, connect it to your FieldGrid account, and sync your first projects."
+---
+
+## Prerequisites
+
+- You are a **Procore Company Admin** for the company you want to connect.
+- You have received a **FieldGrid App Version Key** (a 36‑character ID).
+- You have a **FieldGrid account with management access**.
+
+## Install FieldGrid in Procore
+
+1. Sign in to Procore at `https://procore.com`.
+2. Switch to the correct **Company**.
+3. Go to **Company level → Admin → App Management**.
+4. Click **Install App → Install Custom App**.
+5. Paste the **FieldGrid App Version Key** and click **Install** (confirm any prompts).
+6. _(Optional)_ Create an **App Configuration** and apply it to **Active and Future Projects**.
+
+## Connect Procore in FieldGrid
+
+1. In FieldGrid, go to **Admin → Integrations → Procore**.
+2. Click **Connect Procore**.
+3. You’ll be redirected to Procore (`https://login.procore.com`).
+4. Log in with a Procore user that can see projects in that company and approve the FieldGrid app.
+5. After redirecting back to FieldGrid, the Procore card should show **Connected**.
+6. Click **Sync Projects** (or **Sync All**) to pull initial data.
+
+## Troubleshooting
+
+- **403 / 404 on projects**: usually means the app is not installed in that company or your user doesn’t have permission to see **Projects**.
+- **Not authenticated on callback**: ensure you’re using the in‑app **Connect Procore** button, not typing the URL directly.
+
+If you get stuck at any point, you can contact **FieldGrid Support** at `support@fieldgrid.com`.
+
