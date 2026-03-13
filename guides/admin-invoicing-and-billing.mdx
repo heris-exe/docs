@@ -28,11 +28,13 @@ When it’s time to bill a customer:
 1. Open the **Invoices** section.
 2. Choose **Create invoice**.
 3. Select the customer and the work you’re billing for.
-4. Add line items such as:
-   - Labor.
-   - Materials.
-   - Fixed fees or discounts.
-5. Review taxes, totals, and due dates.
+4. Choose the **invoice type** or template that matches how you bill (for example, time and materials or fixed price).
+5. Add or review line items such as:
+   - Labor (often pulled from approved time entries).
+   - Materials and parts (often pulled from recorded inventory usage).
+   - Fixed fees, call‑out charges, or change orders.
+   - Discounts, retainers, or prepayments.
+6. Review taxes, totals, and due dates.
 
 ### 2. Review and send
 
@@ -54,6 +56,124 @@ After sending, admins can track invoice status such as:
 - Overdue.
 
 Invoices can also be connected back to the jobs, work orders, and materials that generated them.
+
+## Step‑by‑step flows for common invoice types
+
+### Time & Materials (T&M) job
+
+Use this pattern when you bill based on **actual time and parts** used.
+
+1. From **Invoices**, select **Create invoice** and choose **Time and materials** (or the closest option your workspace provides).
+2. Pick the **customer** and the **job or work orders** you’re billing for.
+3. In the invoice builder:
+   - Pull in **approved time entries** for the selected job.
+   - Pull in **approved parts and materials usage** from inventory.
+4. Review the automatically created line items:
+   - Group by **labor type** (for example, standard vs. overtime) if you use different rates.
+   - Group or summarize **materials** in a way that makes sense for your customer.
+5. Add any extra line items:
+   - Trip fees.
+   - Diagnostics.
+   - Miscellaneous charges that didn’t come from time or inventory.
+6. Double‑check:
+   - Rates, quantities, and tax behavior.
+   - That the date range for included time and materials is correct.
+7. Save as a **draft**, then send or export when ready.
+
+This flow relies heavily on **Technician time tracking** and **Technician inventory and expenses** being used consistently.
+
+### Fixed‑price job
+
+Use this pattern when the customer has agreed to a **flat fee** regardless of how much time or material you used.
+
+1. From **Invoices**, create a new invoice and choose a **fixed price** or **lump‑sum** template.
+2. Select the **customer** and related **job or project**.
+3. Add a small number of clear line items such as:
+   - “Fixed price – Install rooftop unit (per contract)”.
+   - “Commissioning and handover”.
+4. Optionally link internal details (time entries, parts) for your records, even if they are not itemized for the customer.
+5. Review:
+   - The agreed price and any taxes.
+   - Any retainers or prepayments that should be applied.
+6. Save as draft and send when the job is complete and accepted.
+
+In this model, time and inventory are still important for **profitability**, but you may not expose that detail directly on the invoice.
+
+### Mixed or change‑order billing
+
+Some work is mostly fixed‑price with **extra T&M** components (for example, unexpected repairs or change orders).
+
+1. Start from a **fixed‑price** style invoice.
+2. Add the core contractual line item(s) as a lump sum.
+3. For each approved change or out‑of‑scope item:
+   - Pull in related time entries and materials.
+   - Add a separate **T&M line item** or short group (for example, “Change order #2 – Additional ductwork, labor and materials”).
+4. Clearly label which lines are:
+   - **Included in the original scope**.
+   - **Approved extras**.
+5. Confirm the customer‑facing description matches any signed change‑order documents.
+6. Finalize and send once all changes are agreed.
+
+This mixed approach keeps invoices clear while still honoring the way the work evolved.
+
+## Walking from source data to invoice lines
+
+When Fieldgrid is used end‑to‑end, an invoice is the last step in a chain:
+
+1. Technicians **clock time** against work orders (see **Technician time tracking**).
+2. Technicians **request and consume parts**, and log **expenses** (see **Technician inventory and expenses**).
+3. Admins **review and approve**:
+   - Time entries (hours, rates, job links).
+   - Inventory usage (quantities, items, job links).
+   - Expenses (receipts, categories, job links).
+4. In **Admin inventory management** and time views, admins correct any obvious mistakes before they hit billing.
+5. In **Invoices**, admins:
+   - Choose which jobs, time, and materials to include.
+   - See suggested line items generated from the approved data.
+6. Admins make final adjustments (grouping, wording, rounding) before sending the invoice.
+
+When you can, prefer **fixing data at the source** (time entries, inventory, expenses) instead of only editing the invoice. That keeps reporting and job costing accurate.
+
+## Scenarios and playbooks
+
+### Scenario: Standard T&M service job
+
+A customer calls in for a service visit on an existing system.
+
+1. The coordinator:
+   - Creates a **job and work order** for the service call.
+   - Assigns a technician and schedules the visit.
+2. The technician:
+   - Clocks in and travels to the site.
+   - Uses **Technician daily workflow** to follow checklists and capture notes.
+   - Logs time and records any parts used.
+3. The admin:
+   - Reviews time and parts, approving or correcting them.
+   - Creates a **Time and materials** invoice linked to that job.
+   - Pulls in all approved time, parts, and expenses for that visit.
+4. The customer:
+   - Receives a clear invoice that matches what actually happened on site.
+
+You can repeat this pattern for most break/fix or one‑off service calls.
+
+### Scenario: Flat‑fee project with change orders
+
+A customer signs a contract for a multi‑day installation at a fixed price, with an agreement that changes are billed separately.
+
+1. The project manager and admin:
+   - Create a **project** and related **jobs** for each major phase.
+   - Attach the signed scope or proposal in the project resources.
+2. Technicians:
+   - Track time and parts normally, even though the main price is fixed.
+   - Flag potential scope changes in logs and notes.
+3. The admin:
+   - For work inside the original scope, keeps internal time and materials as a **profitability check**.
+   - For approved changes, creates separate **change‑order jobs or work orders**.
+4. When billing:
+   - Creates a fixed‑price invoice line for the original scope.
+   - Adds additional T&M lines for each change order, using linked time and inventory for backup.
+
+This gives you a clean customer‑facing invoice while preserving enough detail for internal review.
 
 ## Platform billing flow
 
@@ -83,6 +203,46 @@ If there’s a billing issue, such as a failed payment or an expired trial, Fiel
 - What happened.
 - Which features may be affected.
 - What the admin needs to do next to restore full access.
+
+## Best practices for admins
+
+### Structure items and rates so invoices stay readable
+
+- **Name items clearly** so customers understand what they’re paying for without needing an internal codebook.
+- Use **categories** (for example, Labor, Materials, Fees, Discounts) to keep long invoices navigable.
+- Where possible, link items to your **inventory catalog** so descriptions stay consistent and usage flows through cleanly.
+- If customers don’t need every nut and bolt itemized, group small parts into a single, well‑named line (for example, “Miscellaneous materials – per service visit”).
+
+### Correct source data first when you can
+
+When you notice mistakes while billing, ask:
+
+- **Is this a typo in how we worked, or just how we’re presenting it?**
+  - If a technician assigned time to the wrong job, fix the time entry and re‑approve.
+  - If a part quantity is wrong, correct the inventory usage so both stock levels and invoices are right.
+  - If you simply want to word an item differently for the customer, you can edit the invoice description without changing the underlying data.
+
+As a rule of thumb:
+
+- Fix **time, parts, and expenses** at the source when they are objectively wrong.
+- Adjust **invoice grouping, wording, or pricing** when you just need customer‑friendly presentation.
+
+### Reconcile regularly, not just at month‑end
+
+To avoid surprises:
+
+- Set a **cadence** (for example, daily or a few times per week) where admins:
+  - Review new time entries for approval.
+  - Approve or correct part usage and expenses.
+  - Convert completed jobs into draft invoices.
+- At **week‑end**:
+  - Check for unbilled completed jobs.
+  - Look for unapproved time or expenses that would block invoicing.
+- At **month‑end**:
+  - Reconcile outstanding invoices versus completed jobs.
+  - Spot patterns where jobs frequently require corrections and tighten upstream processes.
+
+This rhythm keeps operational work, financials, and Fieldgrid data tightly aligned.
 
 ## Related documentation
 

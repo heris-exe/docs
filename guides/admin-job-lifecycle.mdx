@@ -21,43 +21,71 @@ Admins usually start from:
 
 ## Lifecycle steps
 
-### 1. Create or import jobs
+### 1. Create or import jobs (planning the work)
 
 From the Jobs list:
 
-- Click **Create job**.
-- Provide:
-  - The customer and project this job belongs to.
-  - A clear job name and description.
-  - Start and target completion dates.
-  - Status and priority.
-  - A lead technician, if applicable.
+1. Click **Create job**.
+2. Choose:
+   - Which **customer** this job is for.
+   - Which **project** it belongs under (or create a new one if needed).
+3. Fill out the job details:
+   - **Job name** – something technicians and coordinators will recognize quickly.
+   - **Description** – enough context so anyone opening the job understands the goal.
+   - **Dates** – start date and target completion date.
+   - **Status** – for example, planning, active, or on hold.
+   - **Priority** – low, medium, high, or urgent.
+   - **Lead technician** (if applicable) – the person ultimately responsible for the job.
+4. Save the job.
 
-Some admins may also import multiple jobs at once from a structured file, depending on your setup.
+Best practices:
 
-### 2. Define work orders
+- Use naming patterns that make sense to your team (for example, `[Customer] – [Site] – [Short description]`).
+- Capture any special constraints (hours, site rules, safety considerations) in the description so technicians aren’t surprised on arrival.
+
+If you already have a list of jobs in a spreadsheet, you may also be able to **import** multiple jobs at once, mapping columns like customer, project, job name, and dates.
+
+### 2. Define work orders (breaking work into visits/tasks)
 
 Within a job, admins break work into **work orders**:
 
-- Each work order represents a concrete task or visit.
-- Work orders typically include:
-  - A title and short description.
-  - Which jobsite they’re for (if there are multiple).
-  - Assigned technician(s).
-  - Due date, priority, and status.
+1. Open the job you just created.
+2. Go to the **Work orders** area.
+3. For each visit or major task:
+   - Give it a **title** (for example, “Site survey – rooftop units”).
+   - Add a short **description** of what needs to be done.
+   - Choose the **jobsite** (if there are multiple).
+   - Set a **due date**, **priority**, and **status** (for example, to-do).
+4. Repeat for all work you expect to happen under this job.
 
-For more complex work, you can add subtasks or checklists to make expectations clear.
+For more complex work:
 
-### 3. Assign technicians and schedule work
+- Add **checklists** so that technicians know exactly what to check, measure, or verify.
+- Use **subtasks** if you want to track smaller pieces of work separately while still keeping them under the same work order.
+
+Best practices:
+
+- Treat work orders as **technician-sized chunks of work**—something someone can reasonably complete in a visit.
+- Use consistent language for similar types of work so reporting and search stay clean.
+
+### 3. Assign technicians and schedule work (putting the right people in the right place)
 
 Admins can assign technicians either:
 
-- Directly on the job or individual work orders.
-- Through the scheduling view, using a calendar or board‑style interface.
+1. From the job or work order view:
+   - Choose which technician(s) should be responsible.
+2. From the **Schedule** view:
+   - Drag or drop jobs/work orders into specific dates and times.
+   - Adjust assignments as needed when people are off or priorities change.
 
 This ensures each technician knows exactly which work orders they own and when they’re expected to be on site.
 
-### 4. Track progress and collaboration
+Best practices:
+
+- Avoid assigning too many high‑priority work orders to the same technician in a single day.
+- Use the schedule to **visualize load** across the team rather than relying on memory.
+
+### 4. Track progress and collaboration (following the work as it happens)
 
 In the job details view, admins can see:
 
@@ -68,7 +96,13 @@ In the job details view, admins can see:
 
 This creates a single place to understand how a job is progressing and what, if anything, is blocked.
 
-### 5. Close out work
+Tips for staying on top of things:
+
+- Skim recent **logs and comments** to spot risks early.
+- Look for work orders that are “stuck” in the same status for too long.
+- Use notes and photos as a quick way to confirm that the work matches expectations.
+
+### 5. Close out work (finishing the lifecycle)
 
 When a job is ready to be closed:
 
@@ -102,7 +136,7 @@ This flow gives you a clear, traceable path from “we have an urgent problem”
 ## Related documentation
 
 - **Technician daily workflow** – what technicians see when completing work orders.
-- **Time tracking** – how time entries are linked to jobs and work orders.
-- **Inventory management** – how inventory usage ties into jobs.
-- **Invoicing and billing** – converting completed work into invoices.
+ - **Time tracking** – how time entries are linked to jobs and work orders.
+ - **Inventory management** – how inventory usage ties into jobs.
+ - **Invoicing and billing** – converting completed work into invoices.
 

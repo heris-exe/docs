@@ -62,6 +62,38 @@ In the admin view, managers can:
 
 Where your process requires it, admins can approve or adjust entries, helping prevent mistakes before they affect invoices or pay runs.
 
+### Approving and correcting time
+
+On the admin side, time usually flows through a simple review cycle:
+
+1. **Technicians submit or finalize** their time for the day.
+2. Admins review:
+   - Total hours per technician.
+   - How time is split across jobs and work orders.
+3. If something looks wrong:
+   - Adjust the entry directly (for example, change the job or duration), or
+   - Send a note to the technician to clarify what happened.
+4. Once everything looks right, mark entries as **approved** so they’re ready for payroll and invoicing.
+
+This review step is your main safeguard before time hits customer invoices or pay runs.
+
+### Fixing common mistakes
+
+Some patterns show up often and are easy to fix when caught early:
+
+- **Forgot to clock out**
+  - Admins can close the open entry at the correct time.
+  - Add a short note so there’s a record of why it was adjusted.
+- **Time logged to the wrong job**
+  - Reassign the entry to the correct job or work order.
+  - Confirm with the technician if there’s any doubt.
+- **Breaks or travel not recorded**
+  - Depending on your policy, you can:
+    - Add a missing break.
+    - Split an entry into “job time” and “travel” for better costing.
+
+Encourage technicians to flag mistakes as soon as they notice them; it’s much easier to correct yesterday’s shift than last month’s.
+
 ## How this connects to the rest of Fieldgrid
 
 Time tracking doesn’t live in isolation:
@@ -71,4 +103,39 @@ Time tracking doesn’t live in isolation:
 - It supports **reporting and analytics** so you can spot trends and improve planning.
 
 For a full picture of the technician experience, see the **Technician daily workflow** guide.
+
+## Scenarios and playbooks
+
+### Scenario: Standard T&M service day
+
+For a technician working a typical time‑and‑materials day:
+
+1. **Morning**
+   - Clock in from the main clock view.
+   - Open the first job from the dashboard or schedule.
+2. **On each job**
+   - Make sure the active time is associated with the current job or visit.
+   - If you leave for another job, switch the active context so time follows you.
+3. **Breaks and travel**
+   - Start a break when you stop working.
+   - Record travel between jobs if your company tracks it.
+4. **End of day**
+   - Clock out from the clock view.
+   - Quickly review your day’s jobs to confirm they reflect what you actually did.
+
+Admins will then approve your time and use it to generate T&M invoices where appropriate.
+
+### Scenario: Fixed‑fee project day
+
+Even when the customer is paying a flat fee, your time still matters internally.
+
+1. Follow the same pattern as above:
+   - Clock in, associate time with jobs, clock out.
+2. For each fixed‑fee job:
+   - Log time accurately so project managers can see how much effort the work really took.
+3. Admins and leaders:
+   - Use this time data to compare **actual effort** vs. **quoted effort**.
+   - Adjust pricing or scopes for future similar projects.
+
+From the technician’s point of view, nothing changes—you still use the clock the same way. The difference is in how admins and leaders use the resulting data.
 

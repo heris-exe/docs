@@ -66,11 +66,107 @@ Admins usually access inventory from the main navigation, and they may also jump
   - Convert approved requests into inventory transactions.
   - Notify technicians of statuses.
 
+### 5. Manage the inventory lifecycle for an item
+
+From the moment you add an item to when it is fully consumed, you can follow a simple lifecycle:
+
+1. **Create the item**
+   - Add it to the catalog with a clear name, code, and category.
+   - Set default locations and, if needed, minimum stock thresholds.
+2. **Receive stock**
+   - Record receipts as inventory transactions, including:
+     - Quantity and location.
+     - Reference to a PO or vendor, where applicable.
+3. **Issue or allocate stock**
+   - Convert technician requests into issues.
+   - Link those issues to jobs or work orders so you know where items went.
+4. **Reconcile and adjust**
+   - When counts don’t match:
+     - Perform cycle counts or spot checks.
+     - Use adjustments to correct quantities, adding notes for audit history.
+5. **Review usage patterns**
+   - Look at transaction history for:
+     - High‑volume items that drive a lot of cost.
+     - Items that frequently go short or obsolete.
+
+Thinking in terms of this lifecycle helps you keep inventory accurate and ready for billing.
+
 ### 4. Reporting and reconciliation
 
 - Admins can review:
   - Historical transaction reports.
   - Stock valuation or variance reports (where supported).
+
+## Scenarios and playbooks
+
+### Scenario: Large parts‑heavy job
+
+A job is expected to consume a lot of material, possibly across multiple visits.
+
+1. The admin:
+   - Reviews the scope and creates or updates catalog items for all major parts.
+   - Optionally creates a **staging location** or dedicated stock for the project.
+2. As parts arrive:
+   - Records **receipts** into the relevant warehouse or staging area.
+3. As technicians work:
+   - Approve **part requests** linked to the job.
+   - Convert them into issues from the staging location to the field.
+4. Throughout the job:
+   - Monitors stock levels and any variance between expected and actual usage.
+5. At billing:
+   - Uses transaction history to ensure that all consumed materials appear on invoices in a way that makes sense to the customer.
+
+This pattern keeps large, high‑value jobs from becoming a black box of material spending.
+
+### Scenario: Technician bought materials on the way
+
+Sometimes technicians need to buy something en route to the job.
+
+1. The technician:
+   - Logs an **expense** for the purchase with:
+     - A short description (for example, “PVC fittings – local supplier”).
+     - The amount and receipt photo.
+     - The related job or work order.
+2. The admin:
+   - Reviews the expense for correctness.
+   - Decides whether to:
+     - Treat it purely as an expense, or
+     - Also create an inventory item/transaction so it can be reused or tracked.
+3. In inventory:
+   - If the material is a one‑off, you may skip cataloging it and let it flow through as a **pass‑through expense**.
+   - If it’s something you’ll stock going forward, add it to the catalog and record a **receipt**.
+4. At billing:
+   - Include the cost as:
+     - A line item (for example, “Materials purchased – as agreed”), or
+     - A detailed part entry if it’s now in the catalog.
+
+This pattern keeps ad‑hoc purchases visible while nudging your team toward more standardized inventory over time.
+
+## Best practices for admins
+
+### Keep the catalog clean and searchable
+
+- Use **consistent naming and categories** so technicians can quickly find items.
+- Avoid duplicate items with slightly different names—merge or retire them where possible.
+- Add brief descriptions when the part name alone might be unclear in the field.
+
+### Decide when something belongs in inventory vs. as a direct expense
+
+- Treat frequently used or reusable items as **inventory**:
+  - Add them to the catalog.
+  - Track receipts and issues carefully.
+- Treat true one‑off or low‑value purchases as **expenses**:
+  - Log them with enough detail for billing and reporting.
+  - Avoid cluttering the catalog with items that will never be used again.
+
+### Reconcile inventory alongside billing
+
+- Align your **inventory review cadence** with your **billing cadence**:
+  - When you close out a batch of jobs, also review related inventory usage.
+  - Make sure high‑value materials have clear, linked transactions.
+- Use variance reports or spot checks to:
+  - Catch missing or unrecorded issues.
+  - Reduce write‑offs before they snowball.
 
 ## Related documentation
 

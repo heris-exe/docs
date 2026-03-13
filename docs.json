@@ -129,6 +129,13 @@
             "pages": [
               "internal/runbook-sensor-pipeline"
             ]
+          },
+          {
+            "group": "Docs & enablement",
+            "pages": [
+              "internal/how-we-use-our-docs-hub",
+              "internal/role-based-start-here"
+            ]
           }
         ]
       }
