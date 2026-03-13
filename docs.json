@@ -79,9 +79,19 @@
           {
             "group": "Core entities",
             "pages": [
-              "api-reference/fields",
-              "api-reference/tasks",
-              "api-reference/sensors"
+              "api-reference/users",
+              "api-reference/organizations",
+              "api-reference/customers",
+              "api-reference/projects",
+              "api-reference/jobs",
+              "api-reference/work-orders",
+              "api-reference/jobsites",
+              "api-reference/clock",
+              "api-reference/checklists",
+              "api-reference/resources",
+              "api-reference/notifications",
+              "api-reference/integrations",
+              "api-reference/alex"
             ]
           }
         ]

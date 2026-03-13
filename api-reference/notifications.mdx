@@ -1,0 +1,20 @@
+---
+title: "Notifications API"
+description: "Endpoints for in-app notifications, devices, and read-status tracking."
+---
+
+## Overview
+
+The Notifications API delivers and tracks in-app notifications for Fieldgrid users.
+
+Backend module: `fieldgrid-fastapi/app/notifications`  
+Representative paths: `/api/v1/notifications/*`
+
+## Example endpoints
+
+- `GET /api/v1/notifications` – list notifications for the current user.
+- `POST /api/v1/notifications/mark-read` – mark notifications as read.
+- `POST /api/v1/notifications/devices` – register a device or channel for push notifications.
+
+Notifications integrate with the web and mobile apps for real-time updates.
+

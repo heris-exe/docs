@@ -1,0 +1,22 @@
+---
+title: "Organizations API"
+description: "Endpoints for managing organizations, members, invites, and join requests."
+---
+
+## Overview
+
+The Organizations API manages tenants, their membership, and onboarding flows.
+
+Backend module: `fieldgrid-fastapi/app/organizations`  
+Base path: `/api/v1/organizations`
+
+## Example endpoints
+
+- `GET /api/v1/organizations` – list organizations the current user can see.
+- `POST /api/v1/organizations` – create a new organization.
+- `GET /api/v1/organizations/{organizationId}` – fetch organization details.
+- `POST /api/v1/organizations/{organizationId}/invites` – invite new members.
+- `POST /api/v1/organizations/join-requests` – create a join request.
+
+These endpoints are central to the admin and technician onboarding flows.
+

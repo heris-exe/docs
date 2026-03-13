@@ -13,56 +13,33 @@ This guide covers:
 - Viewing and managing schedules.
 - Managing shared resources and documents.
 
-The main surfaces are `/admin/schedule` and `/admin/resources` in the web app.
-
 ## Entry points
 
-- **Schedule**
-  - `/admin/schedule` → admin scheduling view.
-- **Resources**
-  - `/admin/resources` → document and resources library.
-- From jobs, projects, and work orders:
-  - Contextual links to schedule views.
-  - Attachments and document references.
+Admins typically reach these areas from the main navigation, and they may also jump into them while reviewing jobs, projects, or work orders.
 
 ## Key screens
 
 ### Schedule
 
-- Page: `AdminSchedule` (`fieldgrid-react/src/pages/AdminSchedule.tsx`).
-- Typically shows:
+The scheduling experience typically shows:
+
   - Job and work-order assignments plotted over time.
   - Technician availability.
   - Filters by project, customer, or technician.
 
 ### Resources
 
-- Page: `AdminResources` (`fieldgrid-react/src/pages/AdminResources.tsx`).
-- Components:
-  - `ResourcesFolderTreeView.tsx` – hierarchical folder navigation.
-  - `DocumentFileIcon.tsx`, `DocumentAddModal.tsx`, `DocumentBatchUploadModal.tsx` – document workflows.
+The resources area typically includes:
 
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Jobs and schedules: `src/types/jobs/job.ts`, `src/types/jobs/schedule.ts`.
-  - Resources and documents: `src/types/resources/resources.ts`.
-- API modules:
-  - Scheduling:
-    - `src/api/jobs/schedules.ts`
-  - Resources and documents:
-    - `src/api/resources/resources.ts`
-    - `src/api/resources/index.ts`
-- Hooks:
-  - `src/hooks/useResourcesGroupedData.ts`
-  - `src/hooks/useDocuments.ts`, `src/hooks/useDocumentsQuery.ts`, `src/hooks/useDocumentThumbnail.ts`
-  - `src/hooks/useJobs.ts`, `src/hooks/useWorkOrders.ts` (for schedule views)
+- A folder or category view for organizing documents.
+- Lists of uploaded files.
+- Actions to add, update, or remove resources.
 
 ## Scheduling workflows
 
 ### 1. View the schedule
 
-In `/admin/schedule`, admins can:
+In the schedule area, admins can:
 
 - See a calendar or timeline of:
   - Jobs.
@@ -74,12 +51,13 @@ In `/admin/schedule`, admins can:
 
 ### 2. Assign and adjust work
 
-- From the schedule view:
-  - Create new assignments for jobs or work orders.
-  - Drag-drop or edit existing entries (if supported by the UI).
-- Under the hood:
-  - Changes are persisted through `jobs/schedules` APIs.
-  - Updates are reflected in technician dashboards and time tracking flows.
+From the schedule view, admins can:
+
+- Assign technicians to upcoming work.
+- Move or reschedule work when priorities change.
+- Balance workloads across the team.
+
+As the schedule changes, technicians see updated assignments in their own Fieldgrid experience.
 
 ### 3. Coordinate with other modules
 
@@ -95,17 +73,19 @@ In `/admin/schedule`, admins can:
 - Admins can create and manage a folder structure:
   - Per customer or project.
   - Per job type or standard operating procedure (SOP) category.
-- `ResourcesFolderTreeView` and related components expose:
-  - Folder hierarchy.
-  - Document lists.
+
+This makes it easier for technicians and office staff to find the right information quickly.
 
 ### 2. Add and update documents
 
-- Using `DocumentAddModal` or `DocumentBatchUploadModal`, admins can:
-  - Upload new files (images, PDFs, etc.).
-  - Add metadata or tags.
-- Thumbnails and previews are supported via:
-  - `useDocumentThumbnail.ts` and UI components such as `DocumentFileIcon.tsx`.
+Admins can upload:
+
+- Manuals.
+- Drawings.
+- SOPs.
+- Photos and supporting documents.
+
+They can also add tags or other context so files stay easy to search and understand.
 
 ### 3. Link resources to jobs and work orders
 

@@ -12,121 +12,75 @@ Jobs and work orders are at the heart of Fieldgrid’s operations model. This gu
 - Assigning technicians.
 - Tracking progress and closing out work.
 
-On the web, this flow is centered around the `/admin/jobs` routes and the generic `/jobs/:id` router in `fieldgrid-react`.
-
 ## Entry points
 
-- From the admin sidebar:
-  - `/admin/jobs` → job management list.
-- From projects or customers:
-  - Links to `/admin/jobs` filtered by project or customer.
-- Direct job links:
-  - `/jobs/:id` via `JobRouter` (`src/pages/JobRouter.tsx`).
+Admins usually start from:
 
-## Key screens and components
-
-- **Job list and filters**
-  - Page: `AdminJobManagementPage` (`src/pages/admin/jobs/AdminJobManagementPage.tsx`) or `AdminJobManagement.tsx`.
-  - Components:
-    - `JobManagementHeader.tsx`
-    - `JobManagementFilters.tsx`
-    - `JobManagementTableSection.tsx`
-    - `JobManagementStats.tsx`
-    - `JobManagementErrorOverlay.tsx`
-- **Job create and edit**
-  - `JobCreateModal.tsx`
-  - `JobImportModal.tsx`
-- **Job details**
-  - Page: `JobDetailsPage.tsx` wrapped by `JobRouter.tsx`.
-  - Tabs/components:
-    - `components/job-details/JobHeader.tsx`
-    - `components/job-details/WorkOrdersTab.tsx`
-    - `components/job-details/FilesTab.tsx`
-    - `components/job-details/TeamsTab.tsx`
-    - Comments, activity, and checklists components.
-
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Jobs: `src/types/jobs/job.ts`
-  - Work orders: `src/types/work-orders/work-orders.ts`
-  - Schedules: `src/types/jobs/schedule.ts`
-  - Related entities: projects, customers, jobsites (`src/types/projects/*`, `src/types/customers/*`, `src/types/jobsites/*`).
-- API modules:
-  - `src/api/jobs/jobs.ts` – core job endpoints.
-  - `src/api/jobs/schedules.ts` – scheduling endpoints.
-  - `src/api/jobs/share.ts` – sharing/links.
-  - `src/api/work-orders/work-orders.ts`
-  - `src/api/work-orders/sub-tasks.ts`
-  - Related: `src/api/checklists/*`, `src/api/comments/*`, `src/api/activities/*`.
-- Hooks:
-  - `src/hooks/useJobs.ts` – list, detail, and mutations.
-  - `src/hooks/useWorkOrders.ts`
-  - `src/hooks/useSubTasks.ts`
-  - `src/hooks/useJobWithWorkOrders.ts`
-  - `src/hooks/useJobComments.ts`
-  - `src/hooks/useJobShares.ts`
-  - `src/hooks/useActivities.ts`, `src/hooks/useIssues.ts`.
-
-These hooks wrap the backend FastAPI endpoints described in the API reference for jobs and work orders.
+- The **Jobs** section in the sidebar.
+- Project or customer views that link into filtered lists of jobs.
 
 ## Lifecycle steps
 
 ### 1. Create or import jobs
 
-- From `/admin/jobs`:
-  - Click **Create job** → opens `JobCreateModal`.
-  - Provide:
-    - Project or customer.
-    - Job name and description.
-    - Dates, status, and optional budget-related fields.
-    - Lead technician (where applicable).
-- Optionally:
-  - Use `JobImportModal` to import multiple jobs from a structured source.
-- The frontend calls job create endpoints via `useJobs` mutations and `api/jobs/jobs.ts`.
+From the Jobs list:
+
+- Click **Create job**.
+- Provide:
+  - The customer and project this job belongs to.
+  - A clear job name and description.
+  - Start and target completion dates.
+  - Status and priority.
+  - A lead technician, if applicable.
+
+Some admins may also import multiple jobs at once from a structured file, depending on your setup.
 
 ### 2. Define work orders
 
-- In `JobDetailsPage` → **Work orders** tab:
-  - Create work orders linked to the job.
-  - Each work order:
-    - Has a title and description.
-    - Is assigned to one or more technicians.
-    - Has priority, due dates, and status fields.
-- Subtasks:
-  - Work orders can be further broken down into subtasks using `SubTaskCreateModal` and `src/api/work-orders/sub-tasks.ts`.
+Within a job, admins break work into **work orders**:
+
+- Each work order represents a concrete task or visit.
+- Work orders typically include:
+  - A title and short description.
+  - Which jobsite they’re for (if there are multiple).
+  - Assigned technician(s).
+  - Due date, priority, and status.
+
+For more complex work, you can add subtasks or checklists to make expectations clear.
 
 ### 3. Assign technicians and schedule work
 
-- Assign technicians to jobs and/or work orders.
-- Use scheduling features:
-  - In the **Schedule** area (`/admin/schedule`) for a calendar or board view.
-  - Directly on the job or work order details.
-- Scheduling data is modeled in:
-  - `src/types/jobs/schedule.ts`
-  - APIs under `src/api/jobs/schedules.ts`.
+Admins can assign technicians either:
+
+- Directly on the job or individual work orders.
+- Through the scheduling view, using a calendar or board‑style interface.
+
+This ensures each technician knows exactly which work orders they own and when they’re expected to be on site.
 
 ### 4. Track progress and collaboration
 
-- Use the **Job details** view to track:
-  - Work order statuses.
-  - Technician assignments.
-  - Time entries and checklists.
-  - Comments, site logs, and files.
-- Activity and audit history:
-  - Fetched via `useActivities.ts` and APIs in `src/api/activities/*`.
-  - Exposed in UI components like activity logs and audit trails.
+In the job details view, admins can see:
+
+- Which work orders are still to‑do, in progress, or done.
+- Which technicians are assigned and where they are working.
+- Any time logged against the job.
+- Checklists, site logs, comments, and files captured by the team.
+
+This creates a single place to understand how a job is progressing and what, if anything, is blocked.
 
 ### 5. Close out work
 
-- When a job is completed:
-  - All work orders should be completed or canceled.
-  - Relevant checklists and logs should be finalized.
-  - Time entries and inventory transactions should be reconciled.
-- The job’s status is updated via job update APIs.
-- Downstream flows:
-  - Generating or updating invoices.
-  - Analytics and reporting.
+When a job is ready to be closed:
+
+- All work orders should be completed or explicitly canceled.
+- Checklists and logs should be finished and reviewed.
+- Time entries and inventory usage should be reconciled.
+- The job status is set to completed.
+
+From there, the job feeds into:
+
+- Invoicing flows (for billing customers).
+- Analytics and reporting (for understanding performance and profitability).
 
 ## Related documentation
 

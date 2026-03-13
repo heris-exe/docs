@@ -1,113 +1,77 @@
 ---
 title: "AI assistant (Alex)"
-description: "How Alex, the AI assistant in Fieldgrid, helps admins and technicians with jobs, documents, and insights."
+description: "How Alex, the AI assistant in Fieldgrid, helps admins and technicians get answers and work faster."
 ---
 
-## Overview
+## What Alex is
 
-**Alex** is Fieldgrid’s AI assistant. It helps users:
+**Alex** is Fieldgrid’s built‑in AI assistant. It sits on top of your jobs, documents, and processes and helps your team:
 
-- Ask questions about jobs, documents, and procedures.
-- Generate summaries and insights.
-- Navigate context-aware suggestions from within the app.
+- Get answers to questions about work in plain language.
+- Summarize long trails of activity or documentation.
+- Spot patterns or next steps without digging through multiple screens.
 
-Alex surfaces in both admin and technician workflows via:
+You can think of Alex as a teammate that “knows” your Fieldgrid workspace.
 
-- Dedicated AI pages.
-- Modals and floating action buttons (FABs).
+## Where you’ll see Alex
 
-## Entry points
+Alex appears in a few key places:
 
-- AI pages:
-  - `/ai` or similar route for `AIAssistantPage` (`fieldgrid-react/src/pages/AIAssistantPage.tsx`).
-  - `/ai/chat/:id` or `AIChatPage` (`src/pages/AIChatPage.tsx`) for session-specific chats.
-- In-context entry points:
-  - Alex FAB in `AppLayout` via `AlexProjectBuilderFab.tsx`.
-  - `AskAlexModal.tsx` for job- or project-specific questions.
+- **Dedicated AI page**
+  - A focused space where admins or managers can ask questions, review past conversations, and explore insights.
+- **In‑context entry points**
+  - A button or icon on screens like jobs, projects, schedules, or resources that says something like **Ask Alex**.
+  - When clicked, it opens Alex with that job or context already in mind.
 
-## Key screens and components
+## Common ways to use Alex
 
-- **AI assistant pages**
-  - `AIAssistantPage.tsx` – main AI console.
-  - `AIChatPage.tsx` – focused chat experience.
-- **Alex UI components**
-  - `components/alex/AskAlexModal.tsx`
-  - `components/alex/AlexProjectBuilderFab.tsx`
-  - Visual elements:
-    - `components/AlexIcon.tsx`
-    - `components/AlexAvatar.tsx`
-- **Chat primitives**
-  - `components/ui/chat.tsx`
-  - `components/ui/chat-message.tsx`
-  - `components/ui/message-input.tsx`
-  - `components/ui/message-list.tsx`
-  - `components/ui/typing-indicator.tsx`
-  - `components/ui/audio-visualizer.tsx`
-  - `components/ui/prompt-suggestions.tsx`
-- **State**
-  - `chatHistoryStore.ts` – stores recent chats and contexts.
+### 1. Ask questions about jobs and projects
 
-## Data model and APIs (frontend perspective)
+From a job or project, you might ask:
 
-- Types:
-  - `src/types/ai/ai.ts` – AI messages, sessions, and responses.
-  - `src/types/ai/timeInsights.ts`
-  - `src/types/alex/alexProjectBuilder.ts`
-- API modules:
-  - `src/api/ai/ai.ts`
-  - `src/api/ai/streaming.ts`
-  - `src/api/ai/alex.ts`
-- Hooks:
-  - AI hooks exposed in `src/hooks` (for streaming and session management).
+- “What’s the current status of this job?”
+- “Which visits are still open this week?”
+- “Has anything blocked this project in the last month?”
 
-These modules talk to the AI backend in `fieldgrid-fastapi` under routes such as:
+Alex can use the information in Fieldgrid to respond in a way that’s easy to understand, without you needing to run separate reports.
 
-- `/api/v1/ai/chat/quick`
-- `/api/v1/ai/chat/sessions`
-- `/api/v1/ai/documents`
+### 2. Summarize activity and documents
 
-## Core workflows
+When there’s a lot of history or documentation, Alex can help by:
 
-### 1. Ask Alex from a job or project
+- Summarizing long site logs or comment threads.
+- Turning a set of notes into a short update you can share with a customer or manager.
+- Highlighting key points from important documents (such as SOPs or manuals you’ve uploaded).
 
-- From a job, project, or schedule view:
-  - Click the **Ask Alex** button or FAB.
-- The `AskAlexModal`:
-  - Captures:
-    - The user’s question.
-    - Context (job ID, project ID).
-    - Optionally related documents.
-  - Sends a request to AI endpoints via `api/ai/*`.
-  - Streams back responses using `streaming` APIs where supported.
+### 3. Get suggestions and next steps
 
-### 2. Use the AI console
+Alex can also help with:
 
-- On the dedicated AI page:
-  - Users can:
-    - Start new chat sessions.
-    - Resume past sessions.
-    - Search previous interactions.
-  - The console uses:
-    - `chatHistoryStore` for local state.
-    - AI APIs for persistence and retrieval.
+- Suggesting checks or follow‑up actions for common situations (for example, repeated callbacks on a job).
+- Pointing out patterns in time tracking or job completion that might warrant attention.
 
-### 3. Upload documents for AI context
+These are suggestions, not automated changes—you stay in control.
 
-- From AI pages or admin resources:
-  - Upload documents to be used as AI context.
-- Backend support (as seen in `fieldgrid-fastapi` docs):
-  - `/api/v1/ai/documents` for document upload.
-  - Chat endpoints with optional document context parameters.
+## Who benefits from Alex
 
-### 4. Time insights and operational help
+- **Technicians** can:
+  - Quickly clarify steps in the field.
+  - Get guidance without leaving the job they’re working on.
+- **Admins and coordinators** can:
+  - Shorten the time it takes to piece together what’s happening across multiple jobs.
+  - Prepare updates and summaries faster.
+- **Leaders** can:
+  - Ask Alex high‑level questions about performance and trends, then drill into specific areas as needed.
 
-- Components like `AlexTimeInsightsCard.tsx` use AI to:
-  - Summarize time tracking data.
-  - Provide recommendations or insights for admins.
+## How to introduce Alex to your team
 
-## Related documentation
+When rolling Alex out:
 
-- **Resources and documents** – how content is organized for AI and users.
-- **Admin analytics** – where AI-derived insights surface.
-- **Internal AI architecture** – how AI is wired in the backend and configured.
+- Start with a few **clear examples** of questions and tasks it’s good at.
+- Encourage people to:
+  - Ask specific questions (for example, “Summarize this week’s work on Project X”).
+  - Use Alex when they’d normally spend time hunting across multiple screens.
+- Remind everyone that AI answers should still be **sanity‑checked** before making big decisions.
+
+Over time, Alex becomes a natural part of how your team interacts with Fieldgrid—another way to get value out of the data you’re already collecting.
 

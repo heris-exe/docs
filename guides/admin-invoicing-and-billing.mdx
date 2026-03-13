@@ -14,130 +14,75 @@ This guide covers both from the admin perspective.
 
 ## Entry points
 
-- Operational invoicing:
-  - `/admin/invoices` → invoice list and builder.
-  - `/invoices/:id` → invoice detail view via `InvoiceRouter`.
-- Platform billing:
-  - `/billing/*` routes:
-    - `/billing/upgrade`
-    - `/billing/seats`
-    - `/billing/modules`
-    - `/billing/checkout/success`, `/billing/checkout/cancel`
-    - `/billing/payment-required`
-    - `/billing/trial-expired`
+Admins typically reach these areas from the main navigation:
 
-## Key screens and components
-
-### Operational invoicing
-
-- `AdminInvoices` (`fieldgrid-react/src/pages/AdminInvoices.tsx`)
-- `AdminInvoiceCreate` (`fieldgrid-react/src/pages/AdminInvoiceCreate.tsx`)
-- `InvoiceRouter` + `InvoiceDetail` (`src/pages/InvoiceRouter.tsx`, `src/pages/InvoiceDetail.tsx`)
-- Invoice builder components:
-  - `components/invoicing/InvoiceBuilderModal.tsx`
-  - `components/invoicing/tabs/PreviewTab.tsx`
-  - `components/InvoiceForm.tsx`
-  - `components/BulkCheckoutModal.tsx`
-
-### Platform billing
-
-- `BillingUpgradePage.tsx`
-- `BillingUpgradeCheckoutPage.tsx`
-- `BillingSeatsPage.tsx`
-- `BillingModulesPage.tsx`
-- `BillingCheckoutSuccessPage.tsx`
-- `BillingCheckoutCancelPage.tsx`
-- `BillingPaymentRequiredPage.tsx`
-- `TrialExpiredPage.tsx`
-
-Supporting components:
-
-- `components/billing/PricingPlanCard.tsx`
-- `components/billing/PaymentRequiredModal.tsx`
-- `components/billing/BillingPlanChangeModal.tsx`
-- `components/billing/ProratedTooltip.tsx`
-- `components/SuperAdminCompanyBillingPanel.tsx`
-- `components/SuperAdminManualSubscriptionModal.tsx`
-
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Invoices: `src/types/invoices/invoices.ts`, `src/types/invoices/index.ts`, `src/types/invoice.ts`.
-  - Billing: `src/types/billing/billing.ts`, `src/types/billing/admin.ts`.
-- API modules:
-  - `src/api/invoices/invoices.ts`
-  - `src/api/billing/billing.ts`
-  - `src/api/billing/admin.ts`
-- Hooks and stores:
-  - `src/hooks/useInvoices.ts`
-  - `src/stores/billingStore.ts`
-  - `src/hooks/useFeatureGate.ts`
-  - `src/config/featureGates.ts`
+- **Invoices** for customer billing.
+- **Billing** for your own Fieldgrid subscription, plan, seats, and modules.
 
 ## Operational invoicing flow
 
 ### 1. Create an invoice
 
-- From `/admin/invoices`:
-  - Use **Create invoice** action to open the invoice builder.
-- In the builder:
-  - Select customer and project/job context.
-  - Add line items:
-    - Labor (time-based).
-    - Materials (inventory items).
-    - Fixed fees or discounts.
-  - Configure taxes and totals.
-- Data is validated with forms and sent to backend invoice APIs.
+When it’s time to bill a customer:
+
+1. Open the **Invoices** section.
+2. Choose **Create invoice**.
+3. Select the customer and the work you’re billing for.
+4. Add line items such as:
+   - Labor.
+   - Materials.
+   - Fixed fees or discounts.
+5. Review taxes, totals, and due dates.
 
 ### 2. Review and send
 
-- Use the preview tab to:
-  - Review invoice layout.
-  - Download or generate a PDF (via helpers like `utils/invoicePdfExport.ts`).
-- Once finalized:
-  - Mark as sent.
-  - Optionally trigger email delivery via backend integrations.
+Before sending an invoice, admins can:
+
+- Preview how it will look to the customer.
+- Confirm line items and totals.
+- Download or share the final version.
+
+Once finalized, the invoice can be marked as sent and tracked through its lifecycle.
 
 ### 3. Track status
 
-- Back on `/admin/invoices`:
-  - Filter by status (draft, sent, paid, overdue).
-  - View links back to jobs and work orders.
+After sending, admins can track invoice status such as:
+
+- Draft.
+- Sent.
+- Paid.
+- Overdue.
+
+Invoices can also be connected back to the jobs, work orders, and materials that generated them.
 
 ## Platform billing flow
 
 ### 1. Trials and conversion
 
-- When new organizations sign up:
-  - They may start on a trial.
-- Trial status is tracked in:
-  - `billingStore` (`trialExpired`, `daysRemaining`, `showTrialWarning`).
-  - `authStore` (via `setSubscriptionStatus`).
-- When trials end:
-  - Users may be redirected to `/billing/trial-expired`.
-  - Critical features can be gated behind billing routes via `ProtectedRoute` and 402 handling in `api/client.ts`.
+When a new organization joins Fieldgrid, it may start with a trial. During this period, admins can:
+
+- See how many trial days remain.
+- Choose when to upgrade.
+- Review what plan or features make sense for their team.
+
+If the trial ends before the account is upgraded, Fieldgrid will prompt the admin to choose a paid plan before continuing with certain features.
 
 ### 2. Upgrades, seats, and modules
 
-- On `/billing/upgrade` and related pages:
-  - Admins select plans, seat counts, and additional modules.
-- `billingStore` provides helpers:
-  - `fetchPricingPlans`, `fetchPremiumModules`, `updateSeats`, `addModule`, `cancelSubscription`, `hasModule`, `canAddTechnicianSeat`, etc.
-- Actions here typically:
-  - Redirect to a payment portal or Stripe checkout.
-  - Update subscription state via backend billing APIs.
+In the billing area, admins can:
+
+- Compare plans.
+- Adjust seat counts as the team grows.
+- Turn on additional modules when needed.
+- Review pricing before confirming changes.
 
 ### 3. Payment-required and subscription issues
 
-- The HTTP client in `src/api/client.ts` handles HTTP 402 responses:
-  - For `trial_expired` reasons, it updates trial flags and redirects to `/billing/trial-expired`.
-  - For `upgrade_plan` or other reasons, it:
-    - Dispatches events.
-    - Opens the **Upgrade** modal using `upgradeModalStore`.
-- When `subscriptionStatus` is `past_due` or `canceled`:
-  - `ProtectedRoute` may redirect to:
-    - `/billing/payment-required`
-    - `/billing/reactivate` (if present)
+If there’s a billing issue, such as a failed payment or an expired trial, Fieldgrid will clearly explain:
+
+- What happened.
+- Which features may be affected.
+- What the admin needs to do next to restore full access.
 
 ## Related documentation
 

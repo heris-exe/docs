@@ -11,19 +11,13 @@ Fieldgrid’s inventory module lets admins:
 - Approve and record inventory transactions.
 - Connect inventory usage to jobs and work orders.
 
-The primary admin surface is `/admin/inventory`, implemented in the web app’s `fieldgrid-react` repo.
-
 ## Entry points
 
-- Sidebar:
-  - `/admin/inventory` → admin inventory overview.
-- Contextual:
-  - From jobs or work orders when assigning or consuming parts.
+Admins usually access inventory from the main navigation, and they may also jump into it while reviewing jobs, work orders, or technician requests.
 
 ## Key screens
 
 - **Inventory overview**
-  - Page: `AdminInventory` (`fieldgrid-react/src/pages/AdminInventory.tsx`).
   - Shows:
     - Item catalog.
     - Current stock by location.
@@ -37,24 +31,6 @@ The primary admin surface is `/admin/inventory`, implemented in the web app’s 
     - Transaction history.
     - Linked jobs/work orders.
 
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Inventory items and stock: `src/types/inventory/inventory.ts`.
-  - Part requests: `src/types/inventory/part-requests.ts`.
-  - Related entities: work orders and jobs (`src/types/work-orders/*`, `src/types/jobs/*`).
-- API modules:
-  - `src/api/inventory/items.ts`
-  - `src/api/inventory/transactions.ts`
-  - `src/api/inventory/reports.ts`
-  - `src/api/inventory/part-requests.ts`
-  - `src/api/inventory/work-orders.ts`
-- Hooks:
-  - `src/hooks/useInventory.ts`
-  - `src/hooks/usePartRequests.ts`
-
-These hooks wrap the backend inventory endpoints in `fieldgrid-fastapi`, which expose inventory items, transactions, and part request APIs.
-
 ## Core workflows
 
 ### 1. Maintain the item catalog
@@ -64,10 +40,8 @@ These hooks wrap the backend inventory endpoints in `fieldgrid-fastapi`, which e
   - Category.
   - Units of measure.
   - Default locations and thresholds.
-- The admin inventory UI provides:
-  - Forms to add/edit items.
-  - Bulk import capabilities (if available).
-- Changes are persisted via `items` APIs and surfaced in `useInventory` queries.
+- Fieldgrid helps admins keep the catalog clean and consistent so technicians can find the right parts quickly.
+- Depending on how your team works, you may also be able to import items in bulk.
 
 ### 2. Record and approve inventory transactions
 
@@ -87,7 +61,6 @@ These hooks wrap the backend inventory endpoints in `fieldgrid-fastapi`, which e
 - Technicians can request parts from the field.
 - Those requests:
   - Appear in admin views for triage and approval.
-  - Are modeled using `part-requests` types and APIs.
 - Admins can:
   - Approve, partially approve, or reject.
   - Convert approved requests into inventory transactions.
@@ -98,7 +71,6 @@ These hooks wrap the backend inventory endpoints in `fieldgrid-fastapi`, which e
 - Admins can review:
   - Historical transaction reports.
   - Stock valuation or variance reports (where supported).
-- Reporting APIs are available via `inventory/reports.ts`.
 
 ## Related documentation
 

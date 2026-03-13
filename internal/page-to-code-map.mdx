@@ -1,0 +1,131 @@
+---
+title: "Page-to-code mapping (high level)"
+description: "High-level mapping from Mintlify pages to the main Fieldgrid codebases for maintainers."
+---
+
+> This page is intended for maintainers. Customer-facing docs should not reference file paths or internals.
+
+## Repos at a glance
+
+- **Web app (admin + technician)**  
+  `C:\Users\badai\Documents\fieldgrid-react`
+- **Backend API**  
+  `C:\Users\badai\Documents\fieldgrid-fastapi`
+- **Mobile app (technician)**  
+  `C:\Users\badai\Documents\fieldgrid-mobile`
+- **Docs (Mintlify)**  
+  `C:\Users\badai\Documents\docs`
+
+## Product guides → code (selected examples)
+
+### Auth, MFA, and email verification
+
+- **Doc**
+  - `guides/auth-and-mfa.mdx`
+- **Web app**
+  - Auth pages under `fieldgrid-react/src/pages/AuthPage.tsx` and `src/pages/auth/*`.
+  - Routing helpers in `src/utils/routing.ts`.
+  - Auth store in `src/stores/authStore.ts`.
+- **Backend**
+  - `fieldgrid-fastapi/app/users/*`  
+    (`/api/v1/users/*`).
+
+### Admin onboarding (create organization)
+
+- **Doc**
+  - `guides/onboarding-admin.mdx`
+- **Web app**
+  - Onboarding pages under `fieldgrid-react/src/pages/Onboarding.tsx` and `src/pages/onboarding/admin/*`.
+  - Onboarding-related state in `src/stores/authStore.ts` and `src/stores/onboardingStore.ts` (if present).
+- **Backend**
+  - `app/organizations`, `app/users`, and billing-related modules (`fieldgrid-fastapi`).
+
+### Technician onboarding (join existing organization)
+
+- **Doc**
+  - `guides/onboarding-technician.mdx`
+- **Web app**
+  - Join flow pages under `fieldgrid-react/src/pages/onboarding/join/*`.
+  - Join request state in `src/stores/joinRequestStore.ts`.
+- **Backend**
+  - `app/organizations` (join requests), `app/users`.
+
+### Admin job lifecycle
+
+- **Doc**
+  - `guides/admin-job-lifecycle.mdx`
+- **Web app**
+  - Job list and management under `fieldgrid-react/src/pages/admin/jobs/*`.
+  - Shared job detail routing via `src/pages/JobRouter.tsx`.
+  - Job and work order components under `src/components/job-details/*` and `src/components/work-orders/*`.
+  - Data hooks under `src/hooks/useJobs.ts`, `src/hooks/useWorkOrders.ts`, etc.
+- **Backend**
+  - `app/jobs`, `app/work_orders`, `app/jobsites`, and related modules.
+
+### Technician daily workflow
+
+- **Doc**
+  - `guides/technician-daily-workflow.mdx`
+- **Web app**
+  - Technician pages under `fieldgrid-react/src/pages/Technician*.tsx`.
+  - Shared job detail routing as above.
+  - Technician-specific analytics and dashboard components.
+- **Mobile app**
+  - Technician flows in `fieldgrid-mobile/app` and `fieldgrid-mobile/src/*`.
+- **Backend**
+  - Same core domains as admin job lifecycle (jobs, work orders, jobsites, clock, resources).
+
+### Technician time tracking
+
+- **Doc**
+  - `guides/technician-time-tracking.mdx`
+- **Web app**
+  - Clock and schedule surfaces in `fieldgrid-react` (clock/schedule pages and time-entry components).
+  - Time-related hooks under `src/hooks` (for clock/time entries).
+- **Backend**
+  - `app/clock` in `fieldgrid-fastapi`.
+
+### Inventory and expenses
+
+- **Doc**
+  - `guides/admin-inventory-management.mdx`
+  - `guides/technician-inventory-and-expenses.mdx`
+- **Web app**
+  - Inventory and expense pages under `fieldgrid-react/src/pages/*Inventory*.tsx`, `*Expense*.tsx`.
+  - Inventory hooks and components under `src/hooks/useInventory.ts`, `src/components/inventory/*`.
+- **Backend**
+  - Inventory modules and expense modules in `fieldgrid-fastapi` (see `app/*` and README).
+
+### Invoicing and billing
+
+- **Doc**
+  - `guides/admin-invoicing-and-billing.mdx`
+- **Web app**
+  - Invoicing pages and builders in `fieldgrid-react/src/pages/*Invoice*.tsx` and `src/components/invoicing/*`.
+  - Billing pages and panels in `src/pages/*Billing*.tsx` and `src/components/billing/*`.
+- **Backend**
+  - Invoicing and billing modules in `fieldgrid-fastapi`.
+
+### AI assistant (Alex)
+
+- **Doc**
+  - `guides/ai-assistant-alex.mdx`
+- **Web app**
+  - Alex pages and components under `fieldgrid-react/src/pages/*AI*`, `src/components/alex/*`, and `src/components/ui/chat*`.
+  - AI hooks and client modules under `src/api/ai/*`, `src/hooks/*` (AI-related).
+- **Backend**
+  - `app/alex` and AI endpoints in `fieldgrid-fastapi`.
+
+## API reference → backend modules
+
+API docs in `api-reference/*` map directly to `fieldgrid-fastapi/app/*` modules and their `/api/v1/...` endpoints. For example:
+
+- `api-reference/users.mdx` → `app/users`.
+- `api-reference/organizations.mdx` → `app/organizations`.
+- `api-reference/jobs.mdx` → `app/jobs`.
+- `api-reference/work-orders.mdx` → `app/work_orders`.
+- `api-reference/clock.mdx` → `app/clock`.
+- `api-reference/alex.mdx` → `app/alex`.
+
+Use the backend README and `app/` directory as the starting point when expanding or correcting API docs.
+

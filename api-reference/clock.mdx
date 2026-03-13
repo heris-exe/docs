@@ -1,0 +1,21 @@
+---
+title: "Clock / Time API"
+description: "Endpoints for technician time tracking: clock in/out and time summaries."
+---
+
+## Overview
+
+The Clock API powers time tracking for technicians and time reporting for admins.
+
+Backend module: `fieldgrid-fastapi/app/clock`  
+Base path: `/api/v1/clock`
+
+## Example endpoints
+
+- `GET /api/v1/clock/entries` – list time entries for the current user or team (depending on role).
+- `POST /api/v1/clock/clock-in` – start a new time entry.
+- `POST /api/v1/clock/clock-out` – end the current time entry.
+- `GET /api/v1/clock/summary` – retrieve summaries for reporting.
+
+Time entries are reflected in the `TimeEntry` type used across the frontend.
+

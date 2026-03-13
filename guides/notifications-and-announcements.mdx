@@ -1,135 +1,94 @@
 ---
 title: "Notifications and announcements"
-description: "How Fieldgrid keeps users informed via notifications, announcements, and activity feeds."
+description: "How Fieldgrid keeps everyone in the loop with notifications, announcements, and activity history."
 ---
 
-## Overview
+## What these features do
 
-Fieldgrid uses:
+Fieldgrid keeps teams informed in three main ways:
 
-- **Notifications** to alert users about events (assignments, comments, approvals, schedule changes).
-- **Announcements** to broadcast messages across the organization (or from super admins to all orgs).
-- **Activity and audit logs** to track changes and actions.
+- **Notifications** – personal alerts about things that matter to you.
+- **Announcements** – broadcasts from admins or super admins to a wider audience.
+- **Activity and audit history** – a record of “who did what, when.”
 
-This guide explains how these surfaces behave for admins and technicians.
+Together, they reduce surprises, cut down on back‑and‑forth messages, and make it easier to understand what’s going on.
 
-## Entry points
-
-- Notifications:
-  - Notification icon and dropdown in the app header.
-  - Dedicated notification or activity pages where configured.
-- Announcements:
-  - Admin:
-    - `/admin/announcement`
-  - Technician:
-    - `/technician/announcement`
-  - Super admin:
-    - `/superadmin/announcements`
-- Audit and activity:
-  - `/admin/audit-log`
-  - `/superadmin/audit-logs`
-
-## Key screens and components
-
-- **Announcements**
-  - Admin:
-    - `AdminAnnouncement` (`fieldgrid-react/src/pages/AdminAnnouncement.tsx`)
-  - Technician:
-    - `TechnicianAnnouncement` (`src/pages/TechnicianAnnouncement.tsx`)
-  - Super admin:
-    - `SuperAdminAnnouncements` (`src/pages/SuperAdminAnnouncements.tsx`)
-  - Components:
-    - `ScheduledAnnouncementsPanel.tsx`
-    - `AnnouncementComposeModal.tsx`
-- **Notifications**
-  - Components:
-    - `components/NotificationItem.tsx`
-    - Header-level notification indicator and dropdown.
-  - Hooks:
-    - `useNotifications.ts`
-    - `useWebSocketNotifications.ts`
-    - `useNotificationEntityResolver.ts`
-- **Activity and audit**
-  - Pages:
-    - `AdminAuditLog.tsx`
-    - `SuperAdminAuditLogs.tsx`
-  - Hooks:
-    - `useActivities.ts`
-    - `useAuditTrail.ts`
-
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Notifications: `src/types/notifications/notifications.ts`
-  - Announcements: `src/types/announcements/announcements.ts`
-  - Activities: `src/types/activities/activities.ts`
-  - Websockets: `src/types/websockets/websockets.ts`
-- API modules:
-  - Notifications:
-    - `src/api/notifications/notifications.ts`
-    - `src/api/notifications/devices.ts`
-    - `src/api/notifications/index.ts`
-  - Announcements:
-    - `src/api/announcements/announcements.ts`
-    - `src/api/announcements/index.ts`
-  - Activities and audit:
-    - `src/api/activities/activities.ts`
-    - `src/api/activities/index.ts`
-  - Websockets:
-    - `src/api/websockets/*` (if present)
-
-## Notification behavior
+## Notifications
 
 ### 1. Receiving notifications
 
-- The frontend subscribes to:
-  - Websocket or server-sent events via `useWebSocketNotifications`.
-  - Polling endpoints via `useNotifications`.
-- Notifications are:
-  - Rendered in header dropdowns.
-  - Counted as unread until opened.
+Users see notifications:
 
-### 2. Opening and marking read
+- In a notification icon or area in the header.
+- Sometimes inline on pages (for example, when you’ve been assigned something new).
 
-- When a user clicks a notification:
-  - Actions may:
-    - Navigate to a job, project, invoice, or other entity.
-    - Mark the notification as read via notifications APIs.
-- `useNotificationEntityResolver` maps:
-  - Notification payloads to concrete app routes.
+Common examples include:
 
-## Announcement behavior
+- Being assigned to a new job or work order.
+- A comment or note on work you’re responsible for.
+- Approval or rejection of requests (time, expenses, parts, etc.).
 
-### 1. Creating announcements (admin and super admin)
+### 2. Opening and marking as read
 
-- Admins and super admins can:
-  - Open an announcement composer.
-  - Draft text, rich content, or links.
-  - Schedule start and end times.
-  - Choose target audiences (org-wide, role-specific, etc.).
-- The composed announcements are saved via:
-  - `announcements` APIs.
+When someone clicks a notification, Fieldgrid typically:
 
-### 2. Viewing announcements (everyone)
+- Takes them directly to the relevant job, project, invoice, or page.
+- Marks that notification as read so it no longer appears as “new.”
 
-- On `/admin/announcement` or `/technician/announcement`:
-  - Users see active and relevant announcements.
-  - Historical announcements may also be listed.
+This helps people jump straight to what needs their attention.
 
-## Activity and audit logs
+## Announcements
 
-- Admins and super admins can:
-  - Review activity logs filtered by user, entity, or date.
-  - Inspect details of:
-    - Who changed what.
-    - When, and from where.
-- These views rely on:
-  - `useActivities`, `useAuditTrail`.
-  - Activity and audit APIs in `fieldgrid-fastapi`.
+### 1. How admins and super admins use announcements
 
-## Related documentation
+Admins and super admins can use announcements to:
 
-- **Admin dashboard and navigation** – where notifications and announcements live in the UI.
-- **Admin job lifecycle** – how job-related events surface as notifications.
-- **Internal runbooks** – how to use activity and audit logs during incidents.
+- Share important updates with their teams (for example, policy changes or big releases).
+- Highlight temporary changes (for example, scheduled maintenance or special instructions).
+- Target messages to specific audiences, such as technicians only or the whole organization.
+
+Announcements may appear:
+
+- In a dedicated announcements area.
+- As banners or cards on key pages.
+
+### 2. How users see announcements
+
+For everyday users, announcements show up as:
+
+- A short list of current announcements relevant to them.
+- Optional access to older announcements to understand what has changed recently.
+
+## Activity and audit history
+
+### 1. Why it matters
+
+Activity and audit views answer questions like:
+
+- “Who changed this setting?”
+- “When was this status updated?”
+- “What’s happened on this job in the last week?”
+
+This is especially valuable when:
+
+- Investigating issues or misunderstandings.
+- Responding to customer questions about what was done and when.
+- Supporting compliance or internal review processes.
+
+### 2. What admins and super admins can see
+
+Depending on their role, admins and super admins can:
+
+- Filter history by user, job, project, or time frame.
+- Drill into specific actions (for example, a change from one status to another).
+
+This gives leaders and coordinators a clear, factual view of activity without needing to guess or reconstruct events from memory.
+
+## How this fits into your workflows
+
+- **Technicians** get timely, targeted notifications instead of relying on calls or texts.
+- **Admins** can communicate clearly at scale and track how work changes over time.
+- **Leaders** gain confidence that there’s a reliable history to refer back to when questions arise.
+
+Used together, notifications, announcements, and activity history help Fieldgrid act as a single, shared source of truth for your operations.
 

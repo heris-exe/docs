@@ -1,0 +1,59 @@
+---
+title: "Auth and login runbook"
+description: "Internal runbook for diagnosing and resolving common authentication and login issues."
+---
+
+## Scope
+
+Use this runbook when:
+
+- Users report being unable to sign in.
+- MFA codes fail repeatedly.
+- Login loops or unexpected redirects appear (for example, bouncing back to login).
+
+This guide focuses on the Fieldgrid web app and backend API.
+
+## 1. Triage
+
+- Confirm:
+  - Which user(s) and organization(s) are affected.
+  - When the issue started.
+  - Whether it affects many users or just a single account.
+- Ask the user to:
+  - Confirm the URL they are using.
+  - Capture any error messages or screenshots.
+
+## 2. Basic checks
+
+- Verify that:
+  - The backend API is healthy (check health endpoints / monitoring).
+  - There are no ongoing incidents with auth providers or infrastructure.
+- For single-user issues:
+  - Confirm the account exists and is active.
+  - Check for obvious misconfigurations (wrong email, incorrect org, etc.).
+
+## 3. MFA-specific issues
+
+- If MFA codes are consistently failing:
+  - Confirm the user’s device time is correct.
+  - Check whether MFA was recently enabled, disabled, or reset.
+  - Consider temporarily disabling MFA for that user as a last resort, following security guidelines.
+
+## 4. Redirect or loop issues
+
+- Symptoms:
+  - Users are redirected back to login after entering valid credentials.
+  - Users are sent to unexpected pages after login.
+- Checks:
+  - Look for obvious misconfigurations in redirect URLs or environment variables.
+  - Verify that session or token lifetimes haven’t been shortened unexpectedly.
+
+## 5. Communication and follow-up
+
+- Keep affected users informed:
+  - Acknowledge the issue.
+  - Provide an estimated time to next update.
+- After resolution:
+  - Document root cause and remediation.
+  - Consider adding tests, monitoring, or safeguards if appropriate.
+

@@ -1,6 +1,6 @@
 ---
 title: "Admin dashboard and navigation"
-description: "How admins navigate Fieldgrid: dashboards, side navigation, search, and cross-role routing."
+description: "How admins use the Fieldgrid dashboard and navigation to stay on top of their operations."
 ---
 
 ## Overview
@@ -11,26 +11,13 @@ The **admin dashboard** is the primary control center for operations leaders. Fr
 - Jump into jobs, projects, resources, analytics, and billing.
 - Navigate across all admin surfaces using the left sidebar and top header.
 
-This experience is built around the `/admin` route namespace and the shared `AppLayout` shell in `fieldgrid-react`.
-
 ## Entry points
 
-- After authentication and onboarding, admins are routed to:
-  - `/admin/dashboard`
-- Subsequent navigations rely on the sidebar and route-based links within pages.
-
-Routing and role-based redirection are implemented in:
-
-- `fieldgrid-react/src/App.tsx` – `ProtectedRoute` and top-level `<Routes>`.
-- `fieldgrid-react/src/utils/routing.ts` – `getDashboardRoute`, `canAccessRoute`.
+After an admin signs in and completes any required onboarding, they land on the admin dashboard. From there, they can use the sidebar and header to move between different parts of the product.
 
 ## Layout shell
 
-The admin experience shares a common layout defined in:
-
-- `fieldgrid-react/src/layouts/AppLayout.tsx`
-
-The layout provides:
+The admin experience shares a common layout across all pages:
 
 - **Sidebar** with sectioned navigation (Dashboard, Jobs, Projects, Resources, Inventory, Invoices, Time, Customers, Analytics, Audit Log, Settings, Integrations, Help).
 - **Header** with:
@@ -38,55 +25,39 @@ The layout provides:
   - Global search.
   - Notifications and announcements.
   - User menu and Alex (AI assistant) entry points.
-- **Content area** controlled by React Router’s `<Outlet>`.
-
-The layout consumes state and hooks such as:
-
-- `useAuthStore` – current user and role.
-- `useOrganization` – active organization context.
-- `useTaskLabel`, `useBreadcrumbs` – contextual UI.
-- `useWebSocketNotifications` – live notifications.
+- **Main content area** where the current page is displayed.
 
 ## Core admin routes
 
-Under the `/admin` namespace, key pages include:
+From the sidebar, admins can quickly reach:
 
-- `/admin/dashboard` → `AdminDashboard` (`src/pages/AdminDashboard.tsx`)
-- `/admin/jobs` → job management.
-- `/admin/projects` → project list and details.
-- `/admin/resources` → document and file management.
-- `/admin/inventory` → inventory management.
-- `/admin/invoices` → invoicing.
-- `/admin/expenses` → expenses and approvals.
-- `/admin/time-entries` → time tracking oversight.
-- `/admin/schedule` → scheduling.
-- `/admin/customers` → customer management.
-- `/admin/team` → team management.
-- `/admin/analytics` → reporting and analytics.
-- `/admin/audit-log` → audit history.
-- `/admin/settings` → organization and app settings.
-- `/admin/integrations` → integrations configuration.
-- `/admin/help` → in-app help and support.
-
-Each of these pages is implemented in `fieldgrid-react/src/pages` as a dedicated React component that uses:
-
-- Domain-specific React Query hooks from `src/hooks`.
-- Domain-specific API modules from `src/api`.
-- Shared UI primitives from `src/components/ui`.
+- **Dashboard** – a high‑level overview of active jobs, activity, and any key alerts.
+- **Jobs** – lists and filters for all jobs in progress.
+- **Projects** – project portfolios grouped by customer.
+- **Resources** – shared documents, drawings, and SOPs.
+- **Inventory** – parts and materials.
+- **Invoices** – operational invoicing for customers.
+- **Expenses** – expense approvals.
+- **Time** – time entries and approvals.
+- **Schedule** – calendars or timelines for jobs and technicians.
+- **Customers** – customer records and contact information.
+- **Team** – user and role management.
+- **Analytics** – reporting and insights.
+- **Audit Log** – historical record of changes.
+- **Settings** – organization‑level configuration.
+- **Integrations** – connections to external tools.
+- **Help** – guidance and support links.
 
 ## Navigation patterns
 
 - **Sidebar navigation**
-  - Driven by a configuration of nav items tied to routes and permissions.
-  - Items may be conditionally shown based on role, entitlements, or feature flags.
+  - Use the left sidebar to move between major areas of the app.
+  - Items may appear or disappear depending on your role and plan.
 - **Breadcrumbs**
-  - Derived from the current route and optional route-level metadata.
-  - Implemented via `useBreadcrumbs` and rendered in `AppLayout`.
+  - Shown near the top of each page to help you understand where you are.
 - **Command palette / search**
-  - Provides quick navigation and global search across jobs, projects, and other entities.
-- **Cross-role navigation**
-  - Some routes (e.g., `/jobs/:id`) are shared across roles using routers like `JobRouter`.
-  - `canAccessRoute` ensures that technicians cannot access admin-only pages.
+  - Lets you quickly jump to jobs, projects, customers, or other entities by name.
+  - Often triggered via a keyboard shortcut or a search box in the header.
 
 ## Related documentation
 

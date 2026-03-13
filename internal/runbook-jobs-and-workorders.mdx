@@ -1,0 +1,52 @@
+---
+title: "Jobs and work orders runbook"
+description: "Internal runbook for handling issues in the job and work order lifecycle."
+---
+
+## Scope
+
+Use this runbook when:
+
+- Jobs or work orders appear missing, duplicated, or stuck in an incorrect status.
+- Technicians cannot see assignments they expect to see.
+- Admin views do not reflect recent changes.
+
+## 1. Triage
+
+- Clarify:
+  - Which customer, project, job, and (if relevant) work order are affected.
+  - What the expected status or behavior is.
+  - Whether the issue is limited to certain users or roles.
+- Ask for:
+  - Screenshots where possible.
+  - Time window when the issue was first noticed.
+
+## 2. Visibility issues (user can’t see work)
+
+- Confirm:
+  - The user’s role and organization.
+  - That the job or work order is assigned to the correct technician or team.
+- Check:
+  - Filters and date ranges in the UI (e.g., is the list filtered to a different status or date).
+
+## 3. Status and lifecycle issues
+
+- If a job or work order is stuck:
+  - Verify that recent actions were recorded (status changes, assignments).
+  - Look at recent activity or audit history for that job.
+- For duplication:
+  - Check whether imports or bulk operations were recently performed.
+
+## 4. Data consistency checks
+
+- If multiple users are seeing different information:
+  - Confirm that they are in the same organization and context.
+  - Check for any known caching or replication delays.
+
+## 5. Communication and follow-up
+
+- Communicate interim workarounds if available (for example, reassigning or recreating a record when safe).
+- After resolution:
+  - Capture root cause and fix steps.
+  - Consider whether additional validations or safeguards are needed in the job lifecycle.
+

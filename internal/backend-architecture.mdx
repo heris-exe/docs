@@ -1,0 +1,130 @@
+---
+title: "Backend architecture and services"
+description: "Overview of the Fieldgrid backend (fieldgrid-fastapi): domain modules, APIs, background workers, and integrations."
+---
+
+## Overview
+
+The primary backend for Fieldgrid lives in the `fieldgrid-fastapi` repo.
+
+From `fieldgrid-fastapi/README.md` and the repo structure, the core application is organized as:
+
+```text
+fieldsync_backend/
+├── main.py                  # App entrypoint
+├── app/                     # Domain modules
+│   ├── users/              # User management & auth
+│   ├── organizations/      # Organization management
+│   ├── customers/          # Customer management (dedupe, contacts)
+│   ├── projects/           # Project management (group jobs, budgets)
+│   ├── jobs/               # Operational jobs under projects
+│   ├── work_orders/        # Work order management (tasks within jobs)
+│   ├── jobsites/           # Field location management
+│   ├── clock/              # Time tracking
+│   ├── checklists/         # Digital workflows
+│   ├── resources/          # Documents, media, and site files
+│   ├── notifications/      # In-app & email notifications
+│   ├── integrations/       # Slack, Teams, Google Drive, etc.
+│   └── alex/               # AI assistant & document processing
+├── libs/                   # Shared utilities
+├── external/               # Infrastructure services (database, Redis, auth)
+├── core/                   # App configuration and middleware
+├── api/                    # FastAPI routing glue
+├── tasks/                  # Background jobs
+├── worker/                 # Dramatiq worker package
+└── alembic/                # Database migrations
+```
+
+All public HTTP APIs are mounted under `/api/v1/...` and surfaced in Swagger/Redoc at runtime.
+
+## Domain modules and APIs
+
+Each domain under `app/` has a consistent structure with `models.py`, `schemas.py`, `services.py`, and `routes.py` files.
+
+- **Users** (`app/users`, `/api/v1/users`)
+  - Registration, login, JWT auth, roles, and profiles.
+  - Used by: auth flows, profile settings, and role-based access checks in the frontend.
+- **Organizations** (`app/organizations`, `/api/v1/organizations`)
+  - Tenant management, org membership, invites, and join requests.
+  - Used by: admin onboarding, technician onboarding, and org switcher in the UI.
+- **Customers** (`app/customers`, `/api/v1/customers`)
+  - Client accounts (name, contacts, history).
+  - Used by: admin job/project creation and reporting workflows.
+- **Projects** (`app/projects`, `/api/v1/projects`)
+  - Project grouping, budgets, dates, and PM assignment.
+  - Used by: admin project list/detail pages and technician project views.
+- **Jobs** (`app/jobs`, `/api/v1/jobs`)
+  - Operational jobs under projects with statuses, priorities, and scheduling metadata.
+  - Used by: admin job management, job details, and technician job flows.
+- **Work orders** (`app/work_orders`, `/api/v1/work-orders`)
+  - Task-level units of work within jobs, assigned to technicians.
+  - Used by: technician execution flows and job lifecycle tracking.
+- **Jobsites** (`app/jobsites`, `/api/v1/jobsites`)
+  - Field locations and technician assignments at the site level.
+  - Used by: jobsite mapping, logs, and checklists.
+- **Clock** (`app/clock`, `/api/v1/clock`)
+  - Time tracking (clock in/out, summaries).
+  - Used by: technician clock screens and admin time entry review.
+- **Checklists** (`app/checklists`, `/api/v1/checklists`)
+  - Templates and executed checklists attached to jobsites and work orders.
+  - Used by: checklist UIs and compliance workflows.
+- **Resources** (`app/resources`, `/api/v1/resources`)
+  - Documents and media associated with jobs, projects, jobsites, and AI.
+  - Used by: resources library, attachments, and AI context.
+- **Notifications** (`app/notifications`, `/api/v1/notifications`)
+  - In-app notifications and device/channel registration.
+  - Used by: notification dropdowns and real-time alerts in the UI.
+- **Integrations** (`app/integrations`, `/api/v1/integrations`)
+  - External integrations (Slack, Teams, Google Drive, etc.).
+  - Used by: admin integrations pages and webhook/push flows.
+- **Alex / AI** (`app/alex`, `/api/v1/ai`, `/api/v1/alex`)
+  - AI document ingestion, chat sessions, and quick answers.
+  - Used by: Alex assistant experiences in the web and mobile apps.
+
+## Infrastructure and shared services
+
+- **External services**
+  - `external/database.py` – database connection handling (PostgreSQL via SQLAlchemy).
+  - `external/redis.py` – Redis access for caching, queues, and rate limiting.
+  - `external/auth.py` – auth helpers.
+- **Core**
+  - `core/config.py` – environment-driven configuration.
+  - `core/middleware.py` – app-wide middleware (logging, error handling, etc.).
+  - `core/logger.py` – structured logging configuration.
+
+## Background workers and scheduled jobs
+
+Fieldgrid uses **Dramatiq** with Redis for background jobs and **APScheduler** for scheduled tasks:
+
+- Worker package: `worker/`
+  - `worker/run.py` – worker entrypoint.
+  - `worker/schedules.py` – job schedule registration.
+  - `worker/metrics.py`, `worker/database.py` – worker-related concerns.
+- Configuration:
+  - Environment variables such as:
+    - `DRAMATIQ_NAMESPACE`
+    - `DRAMATIQ_PROCESSES`
+    - `DRAMATIQ_THREADS`
+
+Examples of background responsibilities (from the repo docs and domain names):
+
+- Sending notifications and emails.
+- Processing AI and document tasks.
+- Organization- or project-level maintenance jobs.
+
+These background flows will be referenced in subsystem-specific architecture and runbooks (auth, jobs, time tracking, etc.).
+
+## Integrations overview
+
+The `integrations` domain in the backend is responsible for connecting Fieldgrid to external systems such as:
+
+- Slack and Microsoft Teams – for notifications and updates.
+- Google Drive – for shared document storage.
+
+The frontend integrates with these services via:
+
+- `fieldgrid-react/src/api/integrations/*.ts`
+- Types under `fieldgrid-react/src/types/integrations/*`
+
+Backend integration modules, combined with these frontend APIs, power the admin integrations pages and any AI document ingestion workflows.
+

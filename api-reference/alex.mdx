@@ -1,0 +1,24 @@
+---
+title: "Alex (AI) API"
+description: "Endpoints for the Alex AI assistant: documents, chat sessions, and quick answers."
+---
+
+## Overview
+
+Alex is the AI assistant in Fieldgrid. The Alex/AI APIs let you:
+
+- Upload documents for AI to use as context.
+- Start and manage chat sessions.
+- Ask quick questions associated with jobs or other entities.
+
+Backend modules: `fieldgrid-fastapi/app/alex` and related AI code  
+Representative paths: `/api/v1/ai/*`, `/api/v1/alex/*`
+
+## Example endpoints
+
+- `POST /api/v1/ai/documents` – upload a document for AI training/context.
+- `POST /api/v1/ai/chat/quick` – ask a one-off question.
+- `POST /api/v1/ai/chat/sessions` – create a new chat session.
+
+These endpoints underlie the Alex experiences described in the Product → AI Assistant guide.
+

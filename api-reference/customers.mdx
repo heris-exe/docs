@@ -1,0 +1,21 @@
+---
+title: "Customers API"
+description: "Endpoints for managing customer accounts in Fieldgrid."
+---
+
+## Overview
+
+Customers represent the client accounts your organization serves.
+
+Backend module: `fieldgrid-fastapi/app/customers`  
+Base path: `/api/v1/customers`
+
+## Example endpoints
+
+- `GET /api/v1/customers` – list customers for the current organization.
+- `POST /api/v1/customers` – create a new customer.
+- `GET /api/v1/customers/{customerId}` – fetch details for a specific customer.
+- `PATCH /api/v1/customers/{customerId}` – update customer information.
+
+Customers sit at the top of the operational hierarchy: they own projects, which in turn own jobs and work orders.
+

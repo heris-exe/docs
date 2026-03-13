@@ -18,7 +18,7 @@ Replace this with the appropriate environment base URL for staging or internal t
 The Fieldgrid API uses secure authentication (for example, bearer tokens or API keys).
 
 ```bash
-curl https://api.fieldgrid.com/api/fields \
+curl https://api.fieldgrid.com/api/v1/users/me \
   -H "Authorization: Bearer YOUR_TOKEN"
 ```
 
@@ -34,10 +34,20 @@ The API returns standard HTTP status codes and error payloads. Focus on:
 
 ## Key resources
 
-The core entities covered in this API reference are:
+The core entities covered in this API reference match the backend services in `fieldgrid-fastapi`:
 
-- **Fields** – spatial areas where work and data are scoped.
-- **Tasks** – units of work linked to fields.
-- **Sensors** – data sources attached to fields or organizations.
+- **Users** – authentication, profiles, and roles (`/api/v1/users`).
+- **Organizations** – tenants, members, and invites (`/api/v1/organizations`).
+- **Customers** – client accounts (`/api/v1/customers`).
+- **Projects** – project management under customers (`/api/v1/projects`).
+- **Jobs** – operational units under projects (`/api/v1/jobs`).
+- **Work Orders** – field-execution units (`/api/v1/work-orders`).
+- **Jobsites** – field locations (`/api/v1/jobsites`).
+- **Clock / Time** – time tracking (`/api/v1/clock`).
+- **Checklists** – digital workflows and templates (`/api/v1/checklists`).
+- **Resources** – documents and site files (`/api/v1/resources`).
+- **Notifications** – in-app notifications (`/api/v1/notifications`).
+- **Integrations** – external tool connections (`/api/v1/integrations`).
+- **AI / Alex** – AI assistant endpoints (`/api/v1/ai`, `/api/v1/alex`).
 
-Each has a dedicated page with example endpoints, shown in the sidebar.
+Each domain has its own page in this section with example endpoints and models.

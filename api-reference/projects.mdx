@@ -1,0 +1,21 @@
+---
+title: "Projects API"
+description: "Endpoints for managing projects under customers."
+---
+
+## Overview
+
+Projects group related jobs for a customer.
+
+Backend module: `fieldgrid-fastapi/app/projects`  
+Base path: `/api/v1/projects`
+
+## Example endpoints
+
+- `GET /api/v1/projects` – list projects, optionally filtered by customer.
+- `POST /api/v1/projects` – create a new project.
+- `GET /api/v1/projects/{projectId}` – fetch a single project.
+- `PATCH /api/v1/projects/{projectId}` – update project details and status.
+
+Projects are linked to customers and contain jobs, jobsites, and related resources.
+

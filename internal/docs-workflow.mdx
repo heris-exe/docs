@@ -1,0 +1,93 @@
+---
+title: "Docs workflow and standards"
+description: "How we write, review, and maintain Fieldgrid documentation in Mintlify."
+---
+
+## Goals
+
+Our docs should:
+
+- Be **customer-first** by default.
+- Stay **in sync with the product** and codebase.
+- Be **easy for anyone on the team to improve** via pull requests.
+
+This page summarizes how we use Mintlify and this repo to achieve that.
+
+## Where things live
+
+- **Customer-facing docs**
+  - `guides/*` – workflows and how-tos.
+  - `concepts.mdx` – high-level domain concepts.
+  - `index.mdx` and `getting-started.mdx` – entry points.
+- **API reference**
+  - `api-reference/*` – one page per backend module or resource family.
+- **Internal docs**
+  - `internal/*` – architecture, runbooks, doc templates, IA, and planning.
+
+All navigation is defined in `docs.json`.
+
+## Writing standards (customer-facing)
+
+- **Audience**
+  - Assume the reader is a customer, not an engineer.
+  - Avoid mentioning route paths, file names, hooks, or APIs in Product docs.
+- **Tone**
+  - Clear, calm, and direct.
+  - Focus on what the user can do and why it matters.
+- **Structure**
+  - Use the templates in `internal/doc-templates.mdx`:
+    - Concept pages.
+    - How-to/user guides.
+    - API reference pages.
+    - Runbooks (for internal docs).
+- **Language**
+  - Prefer active voice and task-oriented headings:
+    - “Create your first project” instead of “Project creation.”
+  - Use short paragraphs and bullet lists where helpful.
+
+## Contribution workflow
+
+### 1. When to update docs
+
+- New feature or major change → at least one new or updated doc.
+- Breaking changes → update affected guides and API reference.
+- Repeated questions from customers or the team → consider adding or expanding a guide.
+
+### 2. How to make a change
+
+1. **Find the right page**
+   - Product/feature flows → `guides/*` or `concepts.mdx`.
+   - API behavior → `api-reference/*`.
+   - Internal behavior or runbooks → `internal/*`.
+2. **Edit the MDX file**
+   - Follow the template sections (overview, steps, related docs).
+3. **Preview locally**
+   - Run `mint dev` at the repo root and check your changes in the browser.
+4. **Open a pull request**
+   - Include a short summary of what changed and why.
+
+### 3. Review expectations
+
+- At least one reviewer who:
+  - Knows the product area.
+  - Skims for clarity and accuracy.
+- For technical behavior or APIs:
+  - Prefer someone from the owning team (frontend, backend, or mobile) to sanity-check it.
+
+## Keeping docs in sync
+
+- Use internal pages (`internal/user-flow-catalog.mdx`, `internal/backend-architecture.mdx`, etc.) as:
+  - Checklists when you’re updating flows or APIs.
+  - Quick references for where to look in the code.
+- When code or behavior changes:
+  - Update both the relevant doc page and any internal mapping if it’s affected.
+
+## Open questions and improvements
+
+As we use this workflow, we can refine:
+
+- Review ownership per section (for example, who owns job lifecycle docs).
+- How we surface “needs doc updates” in issue tracking or PR templates.
+
+For now, this page should be the starting point when you’re unsure how or where to write Fieldgrid docs.
+

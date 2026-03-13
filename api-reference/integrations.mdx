@@ -1,0 +1,20 @@
+---
+title: "Integrations API"
+description: "Endpoints for connecting Fieldgrid to tools like Slack, Teams, and Google Drive."
+---
+
+## Overview
+
+The Integrations API configures external integrations such as messaging platforms and file storage.
+
+Backend module: `fieldgrid-fastapi/app/integrations`  
+Representative paths: `/api/v1/integrations/*`
+
+## Example endpoints
+
+- `GET /api/v1/integrations` – list configured integrations.
+- `POST /api/v1/integrations/{provider}` – connect or update a specific integration (e.g., Slack, Teams, Google Drive).
+- `DELETE /api/v1/integrations/{provider}` – disconnect an integration.
+
+These endpoints power configuration screens under admin integrations and support notifications and document workflows.
+

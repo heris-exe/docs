@@ -1,0 +1,21 @@
+---
+title: "Checklists API"
+description: "Endpoints for checklist templates and executed checklist instances."
+---
+
+## Overview
+
+The Checklists API manages both reusable templates and the executed instances attached to jobsites and work orders.
+
+Backend module: `fieldgrid-fastapi/app/checklists`  
+Base path: `/api/v1/checklists`
+
+## Example endpoints
+
+- `GET /api/v1/checklists/templates` – list available templates.
+- `POST /api/v1/checklists/templates` – create a new template.
+- `GET /api/v1/checklists/instances/{instanceId}` – fetch an executed checklist.
+- `PATCH /api/v1/checklists/instances/{instanceId}` – update responses or status.
+
+Checklist data is modeled in the frontend using `Checklist`, `ChecklistTemplate`, `ChecklistInstance`, and related types.
+

@@ -1,0 +1,93 @@
+---
+title: "Prioritized docs backlog"
+description: "Phased backlog of documentation work for Fieldgrid, starting with the highest-value user flows."
+---
+
+## Phase 1 – Core customer experience (done / in progress)
+
+These are the highest-impact pages for new and existing customers.
+
+- **Introduction and getting started**
+  - `index.mdx` – What is Fieldgrid?
+  - `getting-started.mdx` – First steps for admins.
+- **Concepts**
+  - `concepts.mdx` – Organizations, customers, projects, jobs, work orders, jobsites, time, inventory, expenses, resources, notifications, AI.
+- **Key Product guides**
+  - Auth & MFA – `guides/auth-and-mfa.mdx`
+  - Admin onboarding – `guides/onboarding-admin.mdx`
+  - Technician onboarding – `guides/onboarding-technician.mdx`
+  - Admin dashboard – `guides/admin-dashboard-and-navigation.mdx`
+  - Admin job lifecycle – `guides/admin-job-lifecycle.mdx`
+  - Admin inventory – `guides/admin-inventory-management.mdx`
+  - Admin invoicing & billing – `guides/admin-invoicing-and-billing.mdx`
+  - Admin scheduling & resources – `guides/admin-scheduling-and-resources.mdx`
+  - Technician daily workflow – `guides/technician-daily-workflow.mdx`
+  - Technician time tracking – `guides/technician-time-tracking.mdx`
+  - Technician inventory & expenses – `guides/technician-inventory-and-expenses.mdx`
+  - AI assistant (Alex) – `guides/ai-assistant-alex.mdx`
+  - Notifications & announcements – `guides/notifications-and-announcements.mdx`
+  - Super admin & demo access – `guides/superadmin-and-demo-access.mdx`
+
+Most of Phase 1 has now been drafted in customer-facing language.
+
+## Phase 2 – API reference and deeper product coverage
+
+### 2.1 API reference (initial pass complete)
+
+Each backend module should have a high-level API page:
+
+- Users – `api-reference/users.mdx`
+- Organizations – `api-reference/organizations.mdx`
+- Customers – `api-reference/customers.mdx`
+- Projects – `api-reference/projects.mdx`
+- Jobs – `api-reference/jobs.mdx`
+- Work Orders – `api-reference/work-orders.mdx`
+- Jobsites – `api-reference/jobsites.mdx`
+- Clock – `api-reference/clock.mdx`
+- Checklists – `api-reference/checklists.mdx`
+- Resources – `api-reference/resources.mdx`
+- Notifications – `api-reference/notifications.mdx`
+- Integrations – `api-reference/integrations.mdx`
+- Alex – `api-reference/alex.mdx`
+
+Future improvements:
+
+- Add example request/response payloads.
+- Clarify authentication and common error patterns per domain.
+
+### 2.2 Additional product guides (future)
+
+Potential additions:
+
+- Customer and project management guide.
+- Detailed analytics and reporting guide.
+- Deeper examples of Alex usage for ops leaders.
+
+## Phase 3 – Internal architecture and runbooks
+
+Internal docs support on-call, incident response, and onboarding engineers.
+
+- **Architecture**
+  - `internal/architecture-overview.mdx`
+  - `internal/backend-architecture.mdx`
+  - Subsystem-specific pages as needed.
+- **Runbooks**
+  - `internal/runbook-sensor-pipeline.mdx`
+  - Planned stubs for:
+    - Auth & login issues.
+    - Job / work order lifecycle incidents.
+    - Billing & subscription issues.
+    - AI/Alex incidents.
+    - Worker / background processing issues.
+
+## How to use this backlog
+
+- When planning work:
+  - Choose items from the earliest phase that still have gaps.
+- When building new features:
+  - Add or update docs in the appropriate section and phase.
+- When discovering repeated questions:
+  - Consider promoting those topics into Phase 1 or 2 as dedicated guides.
+
+This backlog should evolve as Fieldgrid evolves, but it gives us a shared starting point for where to invest documentation effort next.
+

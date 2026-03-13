@@ -1,0 +1,57 @@
+---
+title: "Billing and subscription runbook"
+description: "Internal runbook for troubleshooting billing, subscription, and trial issues."
+---
+
+## Scope
+
+Use this runbook when:
+
+- Organizations report billing problems (for example, unexpected plan changes, seat counts, or failed payments).
+- Trials behave unexpectedly (ending too early, not starting, or not converting).
+- Access is restricted due to payment status and needs investigation.
+
+## 1. Triage
+
+- Identify:
+  - The organization and primary contact.
+  - The current plan, seat counts, and modules (if known).
+  - Whether this is a one-off issue or part of a broader incident.
+- Collect:
+  - Screenshots of what the admin sees in the billing area.
+  - Any email notifications about payments or failed charges.
+
+## 2. Trial-related issues
+
+- Confirm:
+  - Trial start and expected end dates.
+  - Whether the org has previously converted or extended trials.
+- Check:
+  - Whether trial state is accurately reflected in the app (for example, banners, warnings).
+
+## 3. Subscription and payment issues
+
+- Verify:
+  - Current subscription status (active, past due, canceled).
+  - Recent payment attempts and outcomes (via your payment provider).
+- For access restrictions:
+  - Confirm whether they align with current status (for example, payment-required screens for past-due accounts).
+
+## 4. Seat counts and modules
+
+- Review:
+  - Seat counts by role (technician, PM, etc.).
+  - Enabled modules and any recent changes.
+- Check:
+  - That UI reflects what is configured in billing.
+  - Whether recent upgrades or downgrades have fully completed.
+
+## 5. Communication and remediation
+
+- Communicate clearly with the customer:
+  - What you’ve found.
+  - Whether this is a configuration issue, a payment provider problem, or a product bug.
+- After fixing the issue:
+  - Update or correct subscription data as needed.
+  - Capture root cause and follow-up items (for example, improved validation or monitoring).
+

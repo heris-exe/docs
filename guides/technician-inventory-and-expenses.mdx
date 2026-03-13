@@ -1,113 +1,91 @@
 ---
 title: "Technician inventory and expenses"
-description: "How technicians request and consume inventory, and log job-related expenses from the field."
+description: "How technicians request and use parts, and log job-related expenses from the field."
 ---
 
-## Overview
+## What technicians can do
 
-Technicians often need to:
+While doing work in the field, technicians often need to:
 
-- Request parts and materials.
-- Record which items they used on a job.
-- Log out-of-pocket expenses such as fuel or parking.
+- Request specific parts or materials.
+- Record which items they actually used.
+- Log out-of-pocket expenses like fuel, parking, or supplies.
 
-This guide explains how those workflows work in the Fieldgrid technician UI, and how they tie back to admin inventory and billing.
+Fieldgrid brings all of this into one place so nothing gets lost in texts or paper receipts.
 
-## Entry points
+## Working with inventory
 
-- Inventory:
-  - `/technician/inventory`
-  - Contextual links from job or work order details.
-- Expenses:
-  - `/technician/expense`
+### 1. See available items
 
-## Key screens
+From the inventory area, technicians can:
 
-- `TechnicianInventory` (`fieldgrid-react/src/pages/TechnicianInventory.tsx`)
-- `TechnicianExpense` (`src/pages/TechnicianExpense.tsx`)
-- Job and work-order details where inventory or expenses are linked:
-  - `TechnicianJobDetails.tsx`
-  - `TechnicianJobLog.tsx`
+- Browse items that are relevant to their work.
+- See key information such as name, category, and (where allowed) stock information.
 
-## Data model and APIs (frontend perspective)
-
-- Types:
-  - Inventory: `src/types/inventory/inventory.ts`
-  - Part requests: `src/types/inventory/part-requests.ts`
-  - Expenses: `src/types/expenses/expenses.ts`
-- API modules:
-  - Inventory:
-    - `src/api/inventory/items.ts`
-    - `src/api/inventory/work-orders.ts`
-    - `src/api/inventory/part-requests.ts`
-  - Expenses:
-    - `src/api/expenses/expenses.ts`
-- Hooks:
-  - `src/hooks/useInventory.ts`
-  - `src/hooks/usePartRequests.ts`
-
-## Inventory workflows
-
-### 1. View available inventory
-
-On `/technician/inventory`:
-
-- Technicians can see:
-  - Available items relevant to their jobs.
-  - Stock information (depending on permissions).
-- The list is populated via `useInventory` and `inventory` APIs.
+This helps them understand what’s available before they request or use anything.
 
 ### 2. Request parts
 
-When a needed item is not readily available:
+When a technician needs something that isn’t already on hand:
 
-- From the technician inventory page or job context:
-  - Submit a **part request**.
-- The request includes:
-  - Item details (name/code or selection from catalog).
-  - Quantity requested.
-  - Job or work order context.
-- Requests are persisted via `part-requests` APIs and become visible to admins under admin inventory views.
+1. They open the inventory or job view.
+2. Start a **part request**.
+3. Fill in:
+   - Which item they need (by name or selection).
+   - How many.
+   - Which job or visit it’s for.
 
-### 3. Use parts on a job
+Those requests appear for admins to triage and approve, so there’s a clear, trackable record of what was asked for and why.
 
-During job execution:
+### 3. Record parts used on a job
 
-- Technicians can:
-  - Record that specific items were used.
-  - Link those usages to:
-    - A work order.
-    - A job or project.
-- These usages are reflected in:
-  - Inventory transaction history.
-  - Job costing and invoicing.
+As work is completed:
 
-## Expense workflows
+- Technicians can indicate which parts they actually used.
+- These usages are tied back to the relevant job or visit.
 
-### 1. Log an expense
+This makes it much easier to:
 
-On `/technician/expense`:
+- Understand job costs.
+- Confirm that inventory counts and billing line items stay in sync.
 
-- Technicians can log:
-  - Reason (e.g., fuel, parking, supplies).
-  - Amount and currency (if applicable).
-  - Associated job or work order.
-  - Photos of receipts (handled via resources or upload fields).
-- Forms on this page:
-  - Use `react-hook-form` and Zod schemas.
-  - Call expense APIs through `expenses` modules.
+## Logging expenses
 
-### 2. Review and corrections
+### 1. Capture expenses as they happen
 
-- Technicians can see:
-  - Recent expenses they have submitted.
-- Admins:
-  - Review and approve expenses through admin-centric views (e.g., `/admin/expenses`).
-  - Link approved expenses to invoices where appropriate.
+From the expenses area, technicians can record costs such as:
 
-## Related documentation
+- Fuel and mileage.
+- Parking fees.
+- Small tool or supply purchases.
 
-+- **Admin inventory management** – how admins approve part requests and manage stock.
-+- **Admin invoicing and billing** – how expenses and parts surface on invoices.
-+- **Technician daily workflow** – where inventory and expenses fit into the overall day.
+Each expense typically includes:
+
+- A description or category.
+- Amount and currency.
+- Which job or visit it relates to.
+- A photo of the receipt, when required.
+
+### 2. Keep a personal record
+
+Technicians can usually see a short history of their recent expenses so they know:
+
+- What they’ve submitted.
+- What may still be pending review.
+
+## What admins and managers see
+
+On the admin side:
+
+- Part requests arrive in an approval queue.
+- Approved requests can be turned into inventory movements.
+- Expenses can be reviewed, approved, and tied into billing where necessary.
+
+This gives finance and operations teams a clean, auditable picture of what was used and what it cost—without adding friction to the technician’s day.
+
+## How this connects to the rest of Fieldgrid
+
+- Inventory usage and expenses enrich the **job lifecycle**, showing the full cost of work.
+- They feed into **invoicing and billing**, so customer invoices reflect both labor and materials.
+- They give managers better insight into **profitability** and **field spending patterns**.
 

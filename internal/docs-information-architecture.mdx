@@ -1,0 +1,104 @@
+---
+title: "Docs information architecture"
+description: "How Fieldgrid’s Mintlify docs are structured across Product, API reference, and Internal sections."
+---
+
+## Overview
+
+Fieldgrid’s documentation is organized into three major sections in Mintlify:
+
+- **Product** – user-facing concepts and workflows.
+- **API reference** – backend HTTP APIs and data models.
+- **Internal** – architecture, runbooks, and documentation standards.
+
+This page describes the current structure defined in `docs/docs.json` and how it maps to the product and codebase.
+
+## Product tab
+
+The Product tab is divided into:
+
+- **Introduction**
+  - `index` – “What is Fieldgrid?”
+- **Getting started**
+  - `getting-started` – quick start for new users.
+- **Fieldgrid concepts**
+  - `concepts` – domain model overview (organizations, customers, projects, jobs, work orders, jobsites, time entries, inventory, expenses, resources, notifications, AI).
+- **Authentication & onboarding**
+  - `guides/auth-and-mfa`
+  - `guides/onboarding-admin`
+  - `guides/onboarding-technician`
+- **Admin workflows**
+  - `guides/admin-dashboard-and-navigation`
+  - `guides/admin-job-lifecycle`
+  - `guides/admin-inventory-management`
+  - `guides/admin-invoicing-and-billing`
+  - `guides/admin-scheduling-and-resources`
+- **Technician workflows**
+  - `guides/technician-daily-workflow`
+  - `guides/technician-time-tracking`
+  - `guides/technician-inventory-and-expenses`
+- **AI, notifications & admin**
+  - `guides/ai-assistant-alex`
+  - `guides/notifications-and-announcements`
+  - `guides/superadmin-and-demo-access`
+
+These pages are primarily driven by `fieldgrid-react` (routes, components, hooks) and the `fieldgrid-mobile` app for technician flows.
+
+## API reference tab
+
+The API reference tab currently contains:
+
+- **Overview**
+  - `api-reference/introduction` – Fieldgrid API overview (base URL, auth, error handling, and domain list).
+- **Core entities**
+  - `api-reference/users`
+  - `api-reference/organizations`
+  - `api-reference/customers`
+  - `api-reference/projects`
+  - `api-reference/jobs`
+  - `api-reference/work-orders`
+  - `api-reference/jobsites`
+  - `api-reference/clock`
+  - `api-reference/checklists`
+  - `api-reference/resources`
+  - `api-reference/notifications`
+  - `api-reference/integrations`
+  - `api-reference/alex`
+
+Each of these pages corresponds 1:1 with a backend module in `fieldgrid-fastapi/app/*` and `/api/v1/...` endpoint families.
+
+## Internal tab
+
+The Internal tab is for Fieldgrid team members:
+
+- **Architecture**
+  - `internal/architecture-overview` – high-level system architecture.
+  - `internal/backend-architecture` – FastAPI backend modules, APIs, workers, and integrations.
+  - (More subsystem-specific pages can be added here over time.)
+- **Runbooks**
+  - `internal/runbook-sensor-pipeline` – sensor/ingestion-focused runbook.
+  - Additional runbooks will be added for auth, jobs, billing, AI, workers, etc.
+- **Docs standards**
+  - `internal/doc-templates` – templates and style guidance for concepts, how-tos, API pages, and runbooks.
+  - `internal/docs-information-architecture` (this page) – overview of the docs IA itself.
+
+As we add more internal docs, they should be grouped under these or additional clearly named groups (for example, “Subsystems” or “Runbooks”).
+
+## How to extend the IA
+
+When adding new pages:
+
+- **Product**
+  - Add guides under an existing group if they fit (for example, a new admin or technician workflow).
+  - Create a new group only when you introduce a new persona or major workflow category.
+- **API reference**
+  - Add pages only for backend modules that actually exist.
+  - Keep names aligned with FastAPI modules and `/api/v1/...` paths.
+- **Internal**
+  - Prefer:
+    - Architecture pages for “how it works”.
+    - Runbook pages for “how to fix it when it breaks”.
+    - Standards/process pages under a dedicated group.
+
+Update `docs/docs.json` to reflect structure changes and keep this IA page in sync.
+

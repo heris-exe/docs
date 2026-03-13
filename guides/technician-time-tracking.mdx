@@ -1,119 +1,74 @@
 ---
 title: "Technician time tracking"
-description: "How technicians clock in/out, log time against jobs, and how admins review time entries."
+description: "How technicians clock in and out, log time against jobs, and how admins review time entries."
 ---
 
-## Overview
+## What technicians can do
 
-Fieldgrid includes built-in **time tracking** so technicians can:
+Fieldgrid gives technicians a simple way to keep accurate records of their time:
 
-- Clock in and out for their day.
-- Log time against jobs and work orders.
-- Capture breaks and travel time where applicable.
+- **Clock in and out** at the beginning and end of the day.
+- **Log time against specific jobs or visits**, when needed.
+- **Capture breaks and travel time** where your process requires it.
 
-Technician-facing time tracking lives primarily under `/technician/clock` and related pages, with admin review surfaces at `/admin/time-entries`.
+All of this happens through a dedicated clock experience and subtle prompts throughout the day.
 
-## Entry points
+## Starting the day: clock in
 
-- Technician:
-  - `/technician/clock` → clock in/out and current status.
-  - `/technician/schedule` and job views → context for where time is spent.
-- Admin:
-  - `/admin/time-entries` → time approvals and reporting.
+When a technician begins work, they:
 
-Routing and access control are shared with the rest of the `/technician` and `/admin` namespaces, governed by `ProtectedRoute` and `canAccessRoute`.
+1. Open Fieldgrid on their device.
+2. Go to the clock area.
+3. Tap **Clock in**.
 
-## Key screens
+They immediately see that they are “on the clock,” along with any context about what they’re currently working on (for example, their first job of the day).
 
-- `TechnicianClockInOut` (`fieldgrid-react/src/pages/TechnicianClockInOut.tsx`)
-- `TechnicianSchedule` (`src/pages/TechnicianSchedule.tsx`)
-- `TechnicianJobLog` (`src/pages/TechnicianJobLog.tsx`)
-- `AdminTimeEntries` (`src/pages/AdminTimeEntries.tsx`)
+## During the day: time against jobs
 
-Components:
+As technicians move through their assigned work:
 
-- `time-entries/ScopedTimeEntriesList.tsx`
-- `time-entries/AlexTimeInsightsCard.tsx`
+- They can see which jobs or visits are planned for the day.
+- When they start work on a job, Fieldgrid can:
+  - Associate their active time with that job or visit.
+  - Show how much time they’ve already spent there.
 
-## Data model and APIs (frontend perspective)
+This makes it easy for the office to see where time is going, without technicians needing to fill out complex timesheets.
 
-- Types:
-  - `TimeEntry` in `src/types/index.ts`
-  - `src/types/clock/clock.ts`
-  - `src/types/clock/admin.ts`
-- API modules:
-  - `src/api/clock/clock.ts`
-  - `src/api/clock/team.ts`
-  - `src/api/clock/index.ts`
-- Hooks:
-  - `src/hooks/useClock.ts`
+## Breaks and travel
 
-These wrap the backend time tracking endpoints in `fieldgrid-fastapi` (`/api/v1/clock/*` and related routes).
+If your organization tracks breaks and travel time, technicians can:
 
-## Technician flow
+- Start and end a break from the same clock view.
+- Capture travel between jobs, according to your policies.
 
-### 1. Clock in
+This helps keep payroll, utilization, and job costing more accurate.
 
-On `/technician/clock`:
+## Ending the day: clock out
 
-- The technician sees:
-  - Current clock status (clocked in vs clocked out).
-  - Any active job context (if applicable).
-- When they click **Clock in**:
-  - The UI calls `useClock` mutations to:
-    - Create a new time entry.
-    - Optionally associate it with a job or work order.
+At the end of the shift, technicians:
 
-### 2. Work on assigned jobs
+1. Open the clock view again.
+2. Tap **Clock out**.
 
-- As they move through jobs:
-  - Time may be:
-    - Logged continuously (one long shift).
-    - Switched between jobs or work orders using job log views.
-- Job-level logs (e.g., `/technician/jobs/:id/log`) can surface:
-  - Time summaries.
-  - Links to time entry details where needed.
+Fieldgrid closes out the active time entry, so the day’s work is clearly defined and ready for review.
 
-### 3. Breaks and clock out
+## What admins and managers see
 
-- From `/technician/clock`:
-  - Technicians can:
-    - Start or end breaks (if modeled in the backend).
-    - Clock out at the end of their shift.
-- The frontend updates:
-  - `TimeEntry` records via clock APIs.
-  - Local UI state in `useClock` and related hooks.
+In the admin view, managers can:
 
-## Admin review flow
+- See time entries by technician, date, or job.
+- Spot missing clocks (for example, clocked in but never clocked out).
+- Review total hours for payroll or billing.
 
-### 1. View time entries
+Where your process requires it, admins can approve or adjust entries, helping prevent mistakes before they affect invoices or pay runs.
 
-On `/admin/time-entries`:
+## How this connects to the rest of Fieldgrid
 
-- Admins see:
-  - Time entries grouped by technician, date, or job.
-  - Statuses (pending, approved, rejected).
-  - Summaries for payroll or billing.
+Time tracking doesn’t live in isolation:
 
-### 2. Approve and correct
+- It explains **how long work really takes** on specific jobs and work orders.
+- It feeds into **invoicing** when labor appears as a line item.
+- It supports **reporting and analytics** so you can spot trends and improve planning.
 
-- Admin actions typically include:
-  - Approving or rejecting entries.
-  - Editing time when corrections are needed, subject to permissions.
-- These operations are implemented via:
-  - `clock` admin APIs (`team` endpoints, where present).
-  - Admin-specific hooks or mutations around `useClock` or dedicated hooks.
-
-### 3. Downstream impact
-
-- Approved time entries can drive:
-  - Payroll calculations.
-  - Invoicing (labor line items).
-  - Analytics and utilization metrics.
-
-## Related documentation
-
-- **Technician daily workflow** – how time tracking fits into the broader day-in-the-life.
-- **Admin job lifecycle** – linking time entries to jobs and work orders.
-- **Admin invoicing and billing** – how time converts into invoice line items.
+For a full picture of the technician experience, see the **Technician daily workflow** guide.
 

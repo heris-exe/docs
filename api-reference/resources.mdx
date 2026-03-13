@@ -1,0 +1,21 @@
+---
+title: "Resources API"
+description: "Endpoints for documents, media, and site files used across Fieldgrid."
+---
+
+## Overview
+
+The Resources API manages documents and media attached to jobs, projects, and jobsites.
+
+Backend module: `fieldgrid-fastapi/app/resources`  
+Base path: `/api/v1/resources`
+
+## Example endpoints
+
+- `GET /api/v1/resources` – list resources with filters (by project, job, jobsite, type, etc.).
+- `POST /api/v1/resources` – upload a new resource (document or media file).
+- `GET /api/v1/resources/{resourceId}` – fetch resource metadata and links.
+- `DELETE /api/v1/resources/{resourceId}` – remove a resource (subject to permissions).
+
+Resources support both technician workflows in the field and AI context via Alex.
+

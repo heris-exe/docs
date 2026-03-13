@@ -1,0 +1,21 @@
+---
+title: "Jobs API"
+description: "Endpoints for managing jobs, the core operational units under projects."
+---
+
+## Overview
+
+Jobs represent major units of work within a project.
+
+Backend module: `fieldgrid-fastapi/app/jobs`  
+Base path: `/api/v1/jobs`
+
+## Example endpoints
+
+- `GET /api/v1/jobs` – list jobs, with filters for project, status, and assignee.
+- `POST /api/v1/jobs` – create a new job under a project.
+- `GET /api/v1/jobs/{jobId}` – fetch a job, including related aggregates.
+- `PATCH /api/v1/jobs/{jobId}` – update job details, status, and assignments.
+
+Jobs own jobsites, work orders, and many operational details surfaced in the web and mobile apps.
+

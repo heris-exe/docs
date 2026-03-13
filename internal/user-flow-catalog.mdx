@@ -1,0 +1,183 @@
+---
+title: "User flow catalog"
+description: "Catalog of key Fieldgrid user flows with entry points, key screens, APIs, and data models."
+---
+
+## Overview
+
+This catalog lists high-value user flows we document in Mintlify and maps each flow to:
+
+- Entry routes in `fieldgrid-react`.
+- Key pages and components.
+- Backend modules and API families.
+- Core data models.
+
+Use this as a reference when updating docs or adding new flows.
+
+## Authentication and onboarding
+
+### Auth, MFA, and email verification
+
+- **Entry routes**
+  - `/auth`, `/login`, `/forgot-password`, `/reset-password`, email verification routes.
+- **Key pages**
+  - `AuthPage`, `SignInForm`, `SignUpForm`, `MfaSetupPage`, `MfaChallengePage`, `EmailVerificationPage`, `EmailVerificationSentPage`, `ForgotPasswordPage`, `ResetPasswordPage`.
+- **Backend APIs**
+  - `app/users` → `/api/v1/users/*`.
+- **Data models**
+  - `User`, `AuthState`, `LoginCredentials`, `RegisterData` (`src/types/index.ts`).
+
+### Admin onboarding (create organization)
+
+- **Entry routes**
+  - `/onboarding`, `/onboarding/admin/*`.
+- **Key pages**
+  - `Onboarding`, `AdminPersonalPersonalizationPage`, `AdminCompanyDetailsPage`, `AdminCompanyCustomizationPage`, `AdminBillingChoicePage`, `AdminAccountCreatedPage`, `WorkspaceSetupSingle`.
+- **Backend APIs**
+  - `app/organizations` → `/api/v1/organizations/*`.
+  - `app/users` (for auth context).
+- **Data models**
+  - `Organization`, `OrgRole`, `Invite` (`src/types/index.ts`).
+
+### Technician onboarding (join existing organization)
+
+- **Entry routes**
+  - `/onboarding/join/*`, invite acceptance routes.
+- **Key pages**
+  - `PersonalInformationPage`, `JoinCompanyPage`, `ConfirmJoinPage`, `RequestSentPage`, `ApprovedPage`, `AccountSuccessPage`.
+- **Backend APIs**
+  - `app/organizations` → join requests and membership.
+  - `app/users` → user state.
+- **Data models**
+  - `Organization`, `JoinRequestStatus`, `User` (`src/types/index.ts`).
+
+## Admin workflows
+
+### Admin dashboard and navigation
+
+- **Entry routes**
+  - `/admin/dashboard` and `/admin/*`.
+- **Key pages**
+  - `AdminDashboard`, `AppLayout` (shared), plus secondary routes for jobs, projects, resources, inventory, invoices, time entries, schedule, customers, team, analytics, audit log, settings, integrations, and help.
+- **Backend APIs**
+  - Multiple domain modules: users, organizations, customers, projects, jobs, work-orders, jobsites, resources, analytics (where present).
+- **Data models**
+  - `User`, `Organization`, `Customer`, `Project`, `Job`, `WorkOrder`, `Jobsite`, etc.
+
+### Admin job lifecycle
+
+- **Entry routes**
+  - `/admin/jobs`, `/jobs/:id`.
+- **Key pages**
+  - `AdminJobManagementPage`, `JobRouter`, `JobDetailsPage`, job management components, work-order tabs, files, teams.
+- **Backend APIs**
+  - `app/jobs` → `/api/v1/jobs/*`.
+  - `app/work_orders` → `/api/v1/work-orders/*`.
+  - `app/customers`, `app/projects`, `app/jobsites` (context).
+- **Data models**
+  - `Job`, `WorkOrder`, `Jobsite`, `JobLogEntry`, `ChecklistTemplate`, `ChecklistInstance`.
+
+### Admin inventory management
+
+- **Entry routes**
+  - `/admin/inventory`.
+- **Key pages**
+  - `AdminInventory` and inventory-related components.
+- **Backend APIs**
+  - Inventory modules (items, transactions, part requests) in `fieldgrid-fastapi`.
+- **Data models**
+  - Inventory and part-request types in `src/types/inventory/*`.
+
+### Admin invoicing and billing
+
+- **Entry routes**
+  - `/admin/invoices`, `/invoices/:id`, `/billing/*`, `/pricing`.
+- **Key pages**
+  - `AdminInvoices`, `AdminInvoiceCreate`, `InvoiceRouter`, `InvoiceDetail`, `BillingUpgradePage`, `BillingSeatsPage`, `BillingModulesPage`, payment-required and trial-expired pages.
+- **Backend APIs**
+  - Invoices module.
+  - Billing/admin endpoints.
+- **Data models**
+  - `Invoice` types (`src/types/invoices/*`, `src/types/invoice.ts`), `Billing` types (`src/types/billing/*`).
+
+### Admin scheduling and resources
+
+- **Entry routes**
+  - `/admin/schedule`, `/admin/resources`.
+- **Key pages**
+  - `AdminSchedule`, `AdminResources`, `ResourcesFolderTreeView`, document modals.
+- **Backend APIs**
+  - `app/jobs` (schedules) and `app/resources`.
+- **Data models**
+  - `Job`, `WorkOrder`, `resources` types.
+
+## Technician workflows
+
+### Technician daily workflow
+
+- **Entry routes**
+  - `/technician/dashboard`, `/technician/jobs`, `/technician/projects`, `/technician/schedule`, `/technician/resources`, `/technician/inventory`, `/technician/invoices`, `/technician/expense`, `/technician/clock`.
+- **Key pages**
+  - `TechnicianDashboard`, `TechnicianJobs`, `TechnicianJobDetails`, `TechnicianJobLog`, `TechnicianProjects`, `TechnicianProjectDetailsPage`, `TechnicianSchedule`, `TechnicianResources`, `TechnicianInventory`, `TechnicianInvoices`, `TechnicianExpense`, `TechnicianClockInOut`.
+- **Backend APIs**
+  - `app/jobs`, `app/work_orders`, `app/jobsites`, `app/clock`, `app/resources`, inventory and invoices modules, expenses module.
+- **Data models**
+  - `Job`, `WorkOrder`, `TimeEntry`, `Log`, `ChecklistInstance`, inventory and expense types.
+
+### Technician time tracking
+
+- **Entry routes**
+  - `/technician/clock`, `/admin/time-entries`.
+- **Key pages**
+  - `TechnicianClockInOut`, `TechnicianSchedule`, `TechnicianJobLog`, `AdminTimeEntries`, time-entry components.
+- **Backend APIs**
+  - `app/clock` → `/api/v1/clock/*`.
+- **Data models**
+  - `TimeEntry` and related clock types.
+
+### Technician inventory and expenses
+
+- **Entry routes**
+  - `/technician/inventory`, `/technician/expense`.
+- **Key pages**
+  - `TechnicianInventory`, `TechnicianExpense`, related job/WO views.
+- **Backend APIs**
+  - Inventory and expenses modules.
+- **Data models**
+  - Inventory types and `Expense`, `ExpenseAttachment`, `ExpenseSummary`.
+
+## Cross-cutting flows
+
+### AI assistant (Alex)
+
+- **Entry routes**
+  - AI-specific pages and modals (e.g., `AIAssistantPage`, `AIChatPage`), Alex FAB and modals.
+- **Key components**
+  - `AskAlexModal`, `AlexProjectBuilderFab`, chat UI components.
+- **Backend APIs**
+  - `app/alex` → `/api/v1/ai/*`, `/api/v1/alex/*`.
+- **Data models**
+  - `AIMessage`, `AIConversation`, and AI-specific types.
+
+### Notifications and announcements
+
+- **Entry routes**
+  - `/admin/announcement`, `/technician/announcement`, `/superadmin/announcements`, `/admin/audit-log`, `/superadmin/audit-logs`.
+- **Key components**
+  - Notification dropdowns, `NotificationItem`, announcements panels and modals.
+- **Backend APIs**
+  - `app/notifications`, `app/announcements` (if separated), activity/audit modules.
+- **Data models**
+  - Notification, announcement, and activity types.
+
+### Super admin and demo access
+
+- **Entry routes**
+  - `/superadmin/dashboard`, `/superadmin/companies`, `/superadmin/plans-billing`, `/superadmin/users`, `/superadmin/demo-access`, `/superadmin/audit-logs`, `/superadmin/announcements`.
+- **Key pages**
+  - All `SuperAdmin*` pages and panels.
+- **Backend APIs**
+  - Admin billing, analytics, and demo-access endpoints.
+- **Data models**
+  - Admin billing and demo-access types.
+

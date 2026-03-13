@@ -1,0 +1,21 @@
+---
+title: "Work Orders API"
+description: "Endpoints for managing work orders, the field-execution units under jobs."
+---
+
+## Overview
+
+Work orders are task-level units of work assigned to technicians.
+
+Backend module: `fieldgrid-fastapi/app/work_orders`  
+Base path: `/api/v1/work-orders`
+
+## Example endpoints
+
+- `GET /api/v1/work-orders` – list work orders, with filters for job, status, or technician.
+- `POST /api/v1/work-orders` – create a new work order under a job.
+- `GET /api/v1/work-orders/{workOrderId}` – fetch a work order with details and assignments.
+- `PATCH /api/v1/work-orders/{workOrderId}` – update status, timing, or assignments.
+
+Work orders are closely tied to time entries, checklists, and materials usage.
+

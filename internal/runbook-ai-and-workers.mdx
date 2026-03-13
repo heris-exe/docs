@@ -1,0 +1,55 @@
+---
+title: "AI and background workers runbook"
+description: "Internal runbook for resolving issues with Alex (AI assistant) and background processing."
+---
+
+## Scope
+
+Use this runbook when:
+
+- Alex responses fail, are unusually slow, or appear obviously wrong.
+- AI-powered features (for example, time insights) stop updating.
+- Background tasks related to notifications, documents, or AI appear stuck.
+
+## 1. Triage
+
+- Clarify:
+  - Which organizations and users are affected.
+  - Which AI features (chat, summaries, insights, etc.) are impacted.
+  - When the issue started and whether it is intermittent or constant.
+- Gather:
+  - Example prompts and screenshots.
+  - Any error messages users see.
+
+## 2. Basic health checks
+
+- Verify:
+  - The main backend API is healthy.
+  - Worker processes are running (Dramatiq workers and schedules).
+  - External AI provider status (for example, OpenAI) if applicable.
+
+## 3. Alex-specific issues
+
+- If chat or quick-answer flows are failing:
+  - Check logs for the AI endpoints.
+  - Look for clear error patterns (time-out, rate limit, misconfiguration).
+- If responses are obviously wrong:
+  - Confirm whether underlying data (jobs, documents, logs) is up to date.
+  - Check whether the wrong context is being sent for specific flows.
+
+## 4. Background worker issues
+
+- If scheduled jobs or background tasks are not running:
+  - Check worker logs for crashes or connectivity problems.
+  - Verify Redis or other backing services used by workers.
+  - Confirm that schedules have been registered and are active.
+
+## 5. Communication and follow-up
+
+- Communicate to impacted users:
+  - Which AI or background-driven features are impacted.
+  - Any temporary workarounds (for example, manual workflows).
+- After resolution:
+  - Capture root cause and remediation.
+  - Consider adding additional logging, alerts, or safeguards if warranted.
+

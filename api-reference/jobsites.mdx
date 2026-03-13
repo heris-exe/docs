@@ -1,0 +1,21 @@
+---
+title: "Jobsites API"
+description: "Endpoints for managing jobsites, the physical locations associated with jobs."
+---
+
+## Overview
+
+Jobsites represent physical locations where work is carried out.
+
+Backend module: `fieldgrid-fastapi/app/jobsites`  
+Base path: `/api/v1/jobsites`
+
+## Example endpoints
+
+- `GET /api/v1/jobsites` – list jobsites for the organization or filtered by job.
+- `POST /api/v1/jobsites` – create a new jobsite.
+- `GET /api/v1/jobsites/{jobsiteId}` – fetch jobsite details.
+- `PATCH /api/v1/jobsites/{jobsiteId}` – update jobsite information and assignments.
+
+Jobsites connect jobs to real-world locations, technicians, and logs.
+

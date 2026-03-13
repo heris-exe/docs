@@ -1,0 +1,21 @@
+---
+title: "Users API"
+description: "Endpoints for user registration, authentication, profiles, and role management."
+---
+
+## Overview
+
+The Users API manages user accounts and profiles in Fieldgrid.
+
+Backend module: `fieldgrid-fastapi/app/users`  
+Base path: `/api/v1/users`
+
+## Example endpoints
+
+- `POST /api/v1/users/register` – register a new user.
+- `POST /api/v1/users/login` – authenticate and obtain tokens.
+- `GET /api/v1/users/me` – fetch the current user’s profile.
+- `PATCH /api/v1/users/me` – update profile details.
+
+Authentication details are covered in the **Fieldgrid API overview**.
+

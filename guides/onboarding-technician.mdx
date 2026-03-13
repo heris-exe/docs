@@ -16,111 +16,70 @@ It covers:
 
 ## Entry points
 
-Technicians can reach the onboarding flow in two main ways:
+Technicians typically reach this flow in two ways:
 
 - **Invite-based**
-  - Via email invite links sent by an admin.
-  - Links typically land on invite-accept screens, which then route into onboarding.
+  - They receive an email invite from an admin.
+  - Clicking the link takes them into a short “join company” experience.
 - **Self-serve join request**
-  - By signing up and choosing “Join an existing company” during onboarding.
-
-Routes for this flow live under:
-
-- `/onboarding/join/*`
-
-Route access is governed by:
-
-- `ProtectedRoute` in `fieldgrid-react/src/App.tsx`
-- Onboarding-related flags in `useAuthStore`
+  - They sign up and choose an option like **Join an existing company**.
 
 ## Key screens
 
-Technician onboarding consists of several pages under `fieldgrid-react/src/pages/onboarding/join/`:
+While the exact layout may evolve, the flow always includes:
 
-- `PersonalInformationPage.tsx`
-- `JoinCompanyPage.tsx`
-- `ConfirmJoinPage.tsx`
-- `RequestSentPage.tsx`
-- `ApprovedPage.tsx`
-- `AccountSuccessPage.tsx`
-
-There is also an **invite acceptance** experience that may live in separate pages (e.g., `InviteAcceptPage`).
+- A step to confirm your personal information.
+- A step to choose or confirm which company you’re joining.
+- A confirmation step to submit your join request.
+- A “request sent” screen.
+- A success screen once you’ve been approved.
 
 ## Step-by-step flow
 
 ### 1. Personal information
 
-On **PersonalInformationPage**:
+First, technicians confirm who they are:
 
-- The technician enters or confirms:
-  - First and last name.
-  - Contact details.
-  - Optional role or specialization.
-- Data is validated with Zod and `react-hook-form`.
+- First and last name.
+- Contact details.
+- Optional information about their role or specialization.
 
 ### 2. Select or search for a company
 
-On **JoinCompanyPage**:
+Next, they choose which company to join:
 
-- The technician selects the company they want to join.
-- Depending on configuration, they may:
-  - Choose from a list of organizations they have been invited to.
-  - Search for an organization by name or invite code.
-- This screen calls organization-related APIs to fetch available organizations and validate options.
+- If they came from an invite link, the company is usually pre‑selected.
+- Otherwise, they may:
+  - Pick from a list of available companies.
+  - Enter an invite code or search by name (depending on how you’ve configured onboarding).
 
 ### 3. Confirm join request
 
-On **ConfirmJoinPage**:
+Before sending the request, technicians see a confirmation step where they:
 
-- The technician reviews:
-  - Organization name.
-  - Expected role (e.g., technician).
-- Submitting this step:
-  - Creates a join request in the backend.
-  - Updates local state using `joinRequestStore` (`src/stores/joinRequestStore.ts`) and `useAuthStore`.
+- Double‑check the company they’re joining.
+- See their expected role (for example, technician).
+- Confirm that they want to send a join request.
 
 ### 4. Request sent
 
-On **RequestSentPage**:
+After submitting, they see a **request sent** screen that clearly explains:
 
-- The UI clearly shows that:
-  - A join request has been sent.
-  - An admin must approve access.
-- It may periodically poll or instruct the user to check back after approval.
+- Their request is pending approval from an admin.
+- They’ll gain access once someone on the admin side approves them.
 
 ### 5. Approval and success
 
-On **ApprovedPage** and **AccountSuccessPage**:
+Once an admin approves the request:
 
-- After an admin approves the join request in the web app:
-  - The technician’s onboarding flags are cleared.
-  - They can proceed into the technician experience.
-- The success pages confirm:
-  - Organization they’ve joined.
-  - Next steps (e.g., view schedule, open jobs, and complete their first time entry).
+- Technicians can log in and access the technician experience.
+- A success screen confirms:
+  - Which company they’ve joined.
+  - Suggested next steps, like viewing today’s schedule or opening their first job.
 
 ### 6. Landing experience
 
-Once onboarding is complete:
-
-- The technician is redirected on subsequent logins to:
-  - `/technician/dashboard`
-- Route selection is driven by:
-  - `getDashboardRoute(user)` in `src/utils/routing.ts`
-
-## Backend touchpoints (high level)
-
-During technician onboarding, the frontend coordinates with backend modules such as:
-
-- `Organizations` – to find and represent organizations.
-- `Users` – to update the user’s organization and role.
-- `Invites` / join requests – to create and track join requests.
-
-Detailed endpoints for these actions will live in:
-
-- **API reference → Users**
-- **API reference → Organizations**
-- **API reference → Invites / Join Requests** (if modeled separately)
+After onboarding is complete, technicians simply sign in and go straight to their technician dashboard for future sessions.
 
 ## Related documentation
 
