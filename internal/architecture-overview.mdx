@@ -1,0 +1,33 @@
+---
+title: "Architecture overview"
+description: "High-level view of Fieldgrid’s architecture: frontends, backends, data stores, and integrations."
+---
+
+## Goals of the architecture
+
+- Support day-to-day field operations with low latency and high availability.
+- Ingest and process sensor data reliably.
+- Provide clear integration points via APIs and webhooks.
+
+## Major components
+
+- **Web app** – the main Fieldgrid UI (for example, `fieldgrid-react`).
+- **API layer** – handles authenticated requests from the web app and external clients.
+- **Ingestion services** – process sensor and integration payloads.
+- **Data stores** – primary transactional database plus any analytics or time-series stores.
+
+## Data flow at a glance
+
+At a very high level:
+
+1. Users interact with the web app.
+2. The web app calls backend APIs.
+3. Sensor providers and integrations send data into ingestion services.
+4. Processed data is written to the database(s) and exposed via APIs and dashboards.
+
+## Where to go next
+
+- Use this page as the starting point for deeper internal docs, such as:
+  - Service-specific pages for each backend.
+  - Detailed diagrams for critical flows (sensor ingestion, task lifecycle, reporting).
+

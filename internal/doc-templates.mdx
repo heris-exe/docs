@@ -1,0 +1,147 @@
+---
+title: "Doc templates and style guide"
+description: "Templates and conventions for writing consistent Fieldgrid documentation in Mintlify."
+---
+
+## General style
+
+- Write in clear, concise language.
+- Prefer task-oriented headings (for example, \"Create a field\" instead of \"Field creation\").
+- Use American English spelling consistently.
+- Address the reader directly: \"you\" and \"your team\".
+
+## Concept page template
+
+Use this template for pages that explain ideas or domain models (for example, **Fieldgrid concepts**).
+
+```mdx
+---
+title: "Concept name"
+description: "Short, user-focused explanation of the concept."
+---
+
+## What it is
+
+Explain the concept in 2–4 sentences. Assume the reader understands the product at a high level but not this specific idea.
+
+## Why it matters
+
+- Bullet points of why this concept exists.
+- How it shows up in the UI and API.
+
+## How it relates to other concepts
+
+- Concept A → Concept B relationships.
+- Links to related pages.
+```
+
+## How-to / user guide template
+
+Use this template for step-by-step workflows (for example, **Onboard a new farm** or **Debug sensor ingestion issues**).
+
+```mdx
+---
+title: "Do a specific job"
+description: "Outcome-focused description: what they achieve by following this guide."
+---
+
+## When to use this guide
+
+Describe the scenario in which the guide applies.
+
+## Prerequisites
+
+- List any roles, permissions, or setup required.
+
+## Step 1 – First major step
+
+1. Concrete instructions.
+2. Screens they will see.
+
+## Step 2 – Next step
+
+...
+
+## Related documentation
+
+- Link to concepts, API reference, or internal runbooks.
+```
+
+## API reference template
+
+Use this template for entity-specific API pages (for example, **Fields API**, **Tasks API**).
+
+```mdx
+---
+title: "Entity API"
+description: "What you can do with this API."
+---
+
+## Overview
+
+1–3 sentences about what this resource represents and common use cases.
+
+## Endpoints
+
+### List entities
+
+`GET /api/entities`
+
+Short description of what the endpoint returns and any key query parameters.
+
+### Get an entity
+
+`GET /api/entities/{id}`
+
+Short description of what the endpoint returns.
+
+### Create an entity
+
+`POST /api/entities`
+
+What is required in the request body.
+
+### Update an entity
+
+`PATCH /api/entities/{id}`
+
+Which fields are updatable.
+
+## Authentication
+
+Link back to the main API overview or briefly restate requirements.
+```
+
+## Runbook template (internal)
+
+Use this template for operational runbooks (for example, **Sensor ingestion pipeline runbook**).
+
+```mdx
+---
+title: "Runbook name"
+description: "What this runbook helps you diagnose or fix."
+---
+
+## Scope
+
+When to use this runbook and when not to.
+
+## 1. Triage
+
+- What info to gather.
+- How to confirm impact.
+
+## 2. Checks
+
+Step-by-step checks, split by layer (UI, API, services, data stores).
+
+## 3. Resolution
+
+Common fixes and their risks.
+
+## 4. Follow-up
+
+- How to communicate with customers.
+- How to record root cause and remediations.
+```
+

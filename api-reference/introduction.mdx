@@ -1,33 +1,43 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: "Fieldgrid API overview"
+description: "How to authenticate, make requests, and work with the Fieldgrid API."
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Base URL
 
-## Welcome
+All examples in this section assume the following base URL:
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+```bash
+https://api.fieldgrid.com
+```
 
-<Card
-  title="Plant Store Endpoints"
-  icon="leaf"
-  href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
->
-  View the OpenAPI specification file
-</Card>
+Replace this with the appropriate environment base URL for staging or internal testing as needed.
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+The Fieldgrid API uses secure authentication (for example, bearer tokens or API keys).
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+```bash
+curl https://api.fieldgrid.com/api/fields \
+  -H "Authorization: Bearer YOUR_TOKEN"
 ```
+
+In your Mintlify demo, you can highlight where tokens or keys are created in the app and how they are passed in requests.
+
+## Error handling
+
+The API returns standard HTTP status codes and error payloads. Focus on:
+
+- 2xx – success.
+- 4xx – client-side issues (validation, auth).
+- 5xx – server-side issues.
+
+## Key resources
+
+The core entities covered in this API reference are:
+
+- **Fields** – spatial areas where work and data are scoped.
+- **Tasks** – units of work linked to fields.
+- **Sensors** – data sources attached to fields or organizations.
+
+Each has a dedicated page with example endpoints, shown in the sidebar.

@@ -1,0 +1,35 @@
+---
+title: "Sensors API"
+description: "Manage sensors and access sensor readings through the Fieldgrid API."
+---
+
+## Overview
+
+Sensors capture environmental data that powers Fieldgrid dashboards and alerts. Use the Sensors API to manage sensors and retrieve readings.
+
+## Endpoints
+
+### List sensors
+
+`GET /api/sensors`
+
+List sensors available to the authenticated caller.
+
+### Get a sensor
+
+`GET /api/sensors/{sensorId}`
+
+Retrieve a single sensor by ID.
+
+### Create a sensor
+
+`POST /api/sensors`
+
+Register a new sensor and associate it with a field or group of fields.
+
+### List sensor readings
+
+`GET /api/sensors/{sensorId}/readings`
+
+Return recent readings for a sensor over a given time range.
+

@@ -1,0 +1,48 @@
+---
+title: "Debug sensor ingestion issues"
+description: "Step-by-step runbook for diagnosing and resolving missing or delayed sensor data in Fieldgrid."
+---
+
+## Symptoms
+
+You might be here if:
+
+- Sensor charts are flat or missing recent data.
+- Alerts are not triggering when expected.
+- A customer reports that a device is online but data is not visible in Fieldgrid.
+
+## Quick checks
+
+1. Confirm which **organization**, **field**, and **sensor** are affected.
+2. Check whether the issue is isolated to one sensor or affects multiple sensors.
+3. Verify time range filters in the UI (e.g., are you looking at the right day).
+
+## Step 1 – Validate sensor status in the UI
+
+1. Navigate to the **Sensors** area.
+2. Open the affected sensor.
+3. Check:
+   - Last seen timestamp.
+   - Last reading timestamp and value.
+
+If both are stale, continue to backend and integration checks.
+
+## Step 2 – Check ingestion pipeline
+
+From here, follow the internal **Sensor ingestion pipeline** runbook in the Internal section. At a high level you will:
+
+- Verify that upstream providers are delivering data.
+- Inspect ingestion logs for errors.
+- Confirm that messages are reaching the processing service and database.
+
+## Step 3 – Communicate with the customer
+
+- Acknowledge the issue and share your initial findings.
+- If you have a workaround (manual data entry, alternate sensor), document it.
+- Once resolved, explain the root cause in clear, non-technical language.
+
+## Related documentation
+
+- **Fieldgrid concepts → Sensors**
+- **Internal → Sensor ingestion pipeline runbook**
+

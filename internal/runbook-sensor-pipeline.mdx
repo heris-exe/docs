@@ -1,0 +1,44 @@
+---
+title: "Sensor ingestion pipeline runbook"
+description: "Internal runbook for investigating and resolving issues in the sensor ingestion pipeline."
+---
+
+## Scope
+
+Use this runbook when sensor data is missing, delayed, or obviously incorrect across one or more sensors.
+
+## 1. Triage
+
+- Confirm which organization(s), field(s), and sensor(s) are affected.
+- Capture:
+  - Time the issue started.
+  - Whether it affects all sensors of a type or specific devices.
+
+## 2. Check external providers
+
+- Verify that upstream providers are sending data (for example, via their dashboards or logs).
+- If providers report issues, coordinate timelines and communicate with impacted customers.
+
+## 3. Inspect ingestion services
+
+- Check logs and metrics for the ingestion service responsible for the affected sensors.
+- Look for:
+  - Spikes in error rates.
+  - Timeouts or rate limiting.
+  - Deployment or configuration changes around the incident start time.
+
+## 4. Validate storage
+
+- Confirm that the data store used for sensor readings is healthy.
+- Check for:
+  - Elevated error rates.
+  - Storage or connection limits.
+
+## 5. Communicate and follow up
+
+- Keep affected customers informed about investigation status and any workarounds.
+- After resolution, document:
+  - Root cause.
+  - Remediation steps.
+  - Any follow-up work (for example, alerts, automation, or safeguards) in this runbook.
+

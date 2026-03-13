@@ -1,0 +1,47 @@
+---
+title: "Fieldgrid concepts"
+description: "Core domain concepts in Fieldgrid and how they relate: fields, tasks, sensors, and roles."
+---
+
+## Fields
+
+Fields are the primary spatial unit in Fieldgrid. They typically represent a physical area where work is planned and data is collected.
+
+- Each field can have metadata such as crop, area, and location.
+- Tasks, sensor readings, and reports are usually scoped to a specific field.
+
+## Tasks
+
+Tasks represent units of work to be performed in the field, such as scouting, spraying, or sampling.
+
+- Tasks have assignees, due dates, statuses, and checklists.
+- Tasks can be created manually or via automations.
+- Completed tasks generate data that can be surfaced in reports.
+
+## Sensors
+
+Sensors are data sources connected to a field or group of fields (e.g., soil moisture probes, weather stations).
+
+- Sensors stream measurements into Fieldgrid.
+- Each sensor belongs to a type (e.g., temperature, moisture) and may be associated with one or more fields.
+- Sensor data powers dashboards, alerts, and decision support.
+
+## Roles and permissions
+
+Roles define what a user can see and do.
+
+- Common roles: field tech, manager, admin.
+- Fine-grained permissions control access to configuration, data export, and API keys.
+
+## Organizations and teams
+
+Organizations group users, fields, and configuration under a single tenant.
+
+- Most configuration (roles, integrations, default settings) is scoped at the organization level.
+- Users can belong to multiple organizations, switching between them as needed.
+
+## How concepts fit together
+
+- Work happens in **fields**, driven by **tasks**, instrumented by **sensors**, and executed by users with specific **roles** inside an **organization**.
+- The API and internal architecture mirror these concepts, so understanding them here will make the rest of the docs easier to follow.
+
